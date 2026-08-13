@@ -18,12 +18,21 @@ export type ClientSettings = Pick<
   | "defaultTimeframe"
 >;
 
+export type ClientUser = {
+  name: string;
+  initial: string;
+  image: string | null;
+};
+
 type AppContextValue = {
   locale: Locale;
   t: Dict;
   settings: ClientSettings;
   /** "Hoy" ya resuelto en el servidor: evita desajustes de huso al hidratar. */
   today: string;
+  user: ClientUser;
+  /** Pendientes de hoy: alimenta la insignia de la campana y la de Hoy. */
+  reminders: number;
 };
 
 const AppContext = createContext<AppContextValue | null>(null);
