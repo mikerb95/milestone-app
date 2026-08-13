@@ -48,6 +48,84 @@ export async function bootstrapUser(userId: string, locale: Locale = "es") {
     .onConflictDoNothing();
 }
 
+/**
+ * Crea las metas y hábitos que el usuario eligió en el tercer paso del
+ * onboarding, con los datos de la plantilla pero sin histórico inventado.
+ */
+export async function createFromTemplates(
+  userId: string,
+  templateKeys: string[],
+  locale: Locale = "es",
+  timezone = "America/Bogota",
+) {
+  if (!templateKeys.length) return;
+
+  const today = todayISO(timezone);
+  const chosen = ONBOARDING_TEMPLATES.filter((tpl) =>
+    templateKeys.includes(tpl.key),
+  );
+
+  const cats = await db
+    .select()
+    .from(categories)
+    .where(eq(categories.userId, userId));
+  const catBySlug = new Map(cats.map((c) => [c.slug, c.id]));
+
+  for (const [i, tpl] of chosen.entries()) {
+    if ("goal" in tpl && tpl.goal) {
+      const g = SAMPLE_GOALS.find((s) => s.key === tpl.goal);
+      if (!g) continue;
+      const [row] = await db
+        .insert(goals)
+        .values({
+          userId,
+          categoryId: catBySlug.get(g.category) ?? null,
+          title: g.title[locale],
+          description: g.desc[locale],
+          why: g.why[locale],
+          type: g.type,
+          timeframe: g.timeframe,
+          status: "active",
+          trend: "steady",
+          /* La plantilla aporta la meta, no el avance: se arranca en cero. */
+          currentValue: 0,
+          targetValue: g.target,
+          unit: g.unit[locale],
+          targetDate: addDays(today, g.targetInDays),
+          sortOrder: i,
+        })
+        .returning({ id: goals.id });
+
+      if (g.milestones?.length) {
+        await db.insert(milestones).values(
+          g.milestones.map((m, j) => ({
+            goalId: row.id,
+            title: m.t[locale],
+            done: false,
+            sortOrder: j,
+          })),
+        );
+      }
+    }
+
+    if ("habit" in tpl && tpl.habit) {
+      const h = SAMPLE_HABITS.find((s) => s.key === tpl.habit);
+      if (!h) continue;
+      await db.insert(habits).values({
+        userId,
+        name: h.name[locale],
+        emoji: h.emoji,
+        color: h.color,
+        type: h.type,
+        targetValue: h.target,
+        frequency: h.frequency,
+        days: h.days ? [...h.days] : null,
+        sortOrder: i,
+      });
+    }
+  }
+}
+
 /** RNG determinista: el mismo usuario siempre ve el mismo histórico. */
 function seededRandom(seed: number) {
   let s = seed * 9301;
