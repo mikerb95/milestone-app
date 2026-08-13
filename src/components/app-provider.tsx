@@ -51,10 +51,14 @@ export function useT(): Dict {
 export function AppProvider({
   settings,
   today,
+  user,
+  reminders,
   children,
 }: {
   settings: ClientSettings;
   today: string;
+  user: ClientUser;
+  reminders: number;
   children: React.ReactNode;
 }) {
   const value = useMemo<AppContextValue>(
@@ -63,8 +67,10 @@ export function AppProvider({
       t: dictFor(settings.locale),
       settings,
       today,
+      user,
+      reminders,
     }),
-    [settings, today],
+    [settings, today, user, reminders],
   );
 
   /* Los ajustes de accesibilidad viven en <html> para que el CSS los vea. */
