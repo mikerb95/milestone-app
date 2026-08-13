@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-top:#0B1038; --bg-mid:#141C4F; --bg-bottom:#1B2560;
+  --g1:rgba(255,255,255,0.06); --g2:rgba(255,255,255,0.10); --g3:rgba(255,255,255,0.16);
+  --gbd:rgba(255,255,255,0.12); --gb:blur(22px);
+  --t1:#FFFFFF; --t2:rgba(255,255,255,0.66); --t3:rgba(255,255,255,0.40);
+  --success:#34D399; --warning:#F2C94C; --danger:#FF453A; --acc:#6C8CF5;
+  --inset:inset 0 1px 0 rgba(255,255,255,0.08);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:#0B1038;color:#fff;font-family:"SF Pro Display","SF Pro Text",-apple-system,BlinkMacSystemFont,Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+input,textarea,select{font:inherit;color:inherit}
+a{color:#8FA8FF;text-decoration:none}
+a:hover{color:#B9C8FF}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:8px}
+@keyframes msInA{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+@keyframes msInB{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+@keyframes msPop{0%{transform:scale(.8)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes msPulse{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes msShimmer{from{background-position:-200% 0}to{background-position:200% 0}}
+@keyframes msFadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important}}
+</style>
+</helmet>
+
+<div style="{{ rootVars }}">
+  <div style="position:fixed;inset:0;background:linear-gradient(180deg,var(--bg-top) 0%,var(--bg-mid) 52%,var(--bg-bottom) 100%);z-index:0"></div>
+  <div style="{{ tintStyle }}"></div>
+
+  <sc-if value="{{ isAuth }}" hint-placeholder-val="{{ false }}">
+    <div style="position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px">
+      <div style="width:100%;max-width:420px;display:flex;flex-direction:column;gap:16px;animation:msFadeUp .4s cubic-bezier(.2,0,0,1) both">
+
+        <sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:8px 0 4px">
+            <div style="width:76px;height:76px;border-radius:24px;background:linear-gradient(150deg,rgba(255,138,61,.9),rgba(124,92,255,.9));display:grid;place-items:center;font-size:34px;box-shadow:0 0 0 1px var(--gbd),var(--inset)">◆</div>
+            <div style="font-size:30px;font-weight:700;letter-spacing:-.02em">Milestone</div>
+            <div style="font-size:15px;color:var(--t2);text-align:center;text-wrap:pretty;max-width:300px">{{ t.welcomeSub }}</div>
+          </div>
+          <div style="padding:16px;border-radius:20px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset);display:flex;flex-direction:column;gap:10px">
+            <button style="height:54px;border-radius:16px;background:#FF8A3D;color:#1A1A1A;font-size:16px;font-weight:700;transition:transform .18s cubic-bezier(.2,0,0,1),filter .18s" style-hover="filter:brightness(1.08);transform:scale(1.02)" style-active="transform:scale(.97)" style-focus="outline:2px solid var(--acc);outline-offset:2px" onClick="{{ goSignup }}">{{ t.signUp }}</button>
+            <button style="height:54px;border-radius:16px;background:var(--g2);border:1px solid var(--gbd);font-size:16px;font-weight:600;transition:background .18s,transform .18s" style-hover="background:var(--g3)" style-active="transform:scale(.97)" style-focus="outline:2px solid var(--acc);outline-offset:2px" onClick="{{ goLogin }}">{{ t.signIn }}</button>
+            <button style="height:48px;border-radius:16px;background:transparent;color:var(--t2);font-size:14px;font-weight:500" style-hover="color:var(--t1)" onClick="{{ goApp }}">{{ t.explore }}</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isForm }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:12px">
+            <button style="width:40px;height:40px;border-radius:999px;background:var(--g2);border:1px solid var(--gbd);backdrop-filter:var(--gb);font-size:18px;display:grid;place-items:center" style-hover="background:var(--g3)" style-active="transform:scale(.97)" onClick="{{ goWelcome }}">‹</button>
+            <div style="font-size:22px;font-weight:700;letter-spacing:-.02em">{{ authTitle }}</div>
+          </div>
+          <div style="padding:16px;border-radius:20px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset);display:flex;flex-direction:column;gap:12px">
+            <sc-if value="{{ isSignup }}" hint-placeholder-val="{{ false }}">
+              <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3)">{{ t.nameLabel }}</span>
+              <input placeholder="Daniela Restrepo" style="height:48px;border-radius:14px;background:var(--g2);border:1px solid var(--gbd);padding:0 14px;font-size:15px;outline:none" style-focus="outline:2px solid var(--acc);outline-offset:2px" /></label>
+            </sc-if>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3)">{{ t.email }}</span>
+            <input placeholder="daniela@correo.com" style="height:48px;border-radius:14px;background:var(--g2);border:1px solid var(--gbd);padding:0 14px;font-size:15px;outline:none" style-focus="outline:2px solid var(--acc);outline-offset:2px" /></label>
+            <sc-if value="{{ needsPassword }}" hint-placeholder-val="{{ false }}">
+              <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3)">{{ t.password }}</span>
+              <input type="password" placeholder="••••••••" style="height:48px;border-radius:14px;background:var(--g2);border:1px solid var(--gbd);padding:0 14px;font-size:15px;outline:none" style-focus="outline:2px solid var(--acc);outline-offset:2px" /></label>
+            </sc-if>
+            <button style="height:54px;margin-top:4px;border-radius:16px;background:#FF8A3D;color:#1A1A1A;font-size:16px;font-weight:700;transition:transform .18s,filter .18s" style-hover="filter:brightness(1.08);transform:scale(1.02)" style-active="transform:scale(.97)" onClick="{{ authSubmit }}">{{ authCta }}</button>
+            <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <button style="height:48px;border-radius:16px;background:var(--g2);border:1px solid var(--gbd);font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:10px" style-hover="background:var(--g3)" onClick="{{ authSubmit }}"><span style="width:20px;height:20px;border-radius:999px;background:#fff;color:#1A1A1A;font-weight:800;font-size:13px;display:grid;place-items:center">G</span>{{ t.google }}</button>
+                <button style="font-size:13px;color:var(--t2);align-self:center" style-hover="color:var(--t1)" onClick="{{ goForgot }}">{{ t.forgot }}</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ isForgot }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:13px;color:var(--t3);text-wrap:pretty">{{ t.forgotHelp }}</div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isOnb }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:6px">
+            <sc-for list="{{ onbDots }}" as="d" hint-placeholder-count="3"><div style="{{ d.st }}"></div></sc-for>
+          </div>
+          <div style="padding:20px 16px;border-radius:20px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset);display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3)">{{ onbStepLabel }}</div>
+              <div style="font-size:24px;font-weight:700;letter-spacing:-.02em;text-wrap:pretty">{{ onbTitle }}</div>
+              <div style="font-size:15px;color:var(--t2);text-wrap:pretty">{{ onbSub }}</div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ onbChips }}" as="c" hint-placeholder-count="6">
+                <button style="{{ c.st }}" onClick="{{ c.tap }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+            <button style="height:54px;border-radius:16px;background:#FF8A3D;color:#1A1A1A;font-size:16px;font-weight:700;transition:transform .18s,filter .18s" style-hover="filter:brightness(1.08);transform:scale(1.02)" style-active="transform:scale(.97)" onClick="{{ onbNext }}">{{ onbCta }}</button>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isApp }}" hint-placeholder-val="{{ true }}">
+    <div style="{{ shellStyle }}">
+
+      <nav style="{{ navStyle }}">
+        <div style="{{ navPillStyle }}"></div>
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
+          <button style="{{ n.st }}" style-active="transform:scale(.97)" style-focus="outline:2px solid var(--acc);outline-offset:2px" onClick="{{ n.tap }}">
+            <span style="{{ n.iconSt }}">
+              <sc-if value="{{ n.isToday }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8.2 12.4l2.6 2.6L16 9.6"></path></svg></sc-if>
+              <sc-if value="{{ n.isGoals }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.2"></circle><circle cx="12" cy="12" r="3.4"></circle></svg></sc-if>
+              <sc-if value="{{ n.isHabits }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="7" height="7" rx="2.2"></rect><rect x="13" y="4" width="7" height="7" rx="2.2"></rect><rect x="4" y="13" width="7" height="7" rx="2.2"></rect><rect x="13" y="13" width="7" height="7" rx="2.2"></rect></svg></sc-if>
+              <sc-if value="{{ n.isTasks }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6.5h10M9.5 12h10M9.5 17.5h10"></path><path d="M3.6 6.4l1.3 1.3 2.2-2.4M3.6 11.9l1.3 1.3 2.2-2.4M3.6 17.4l1.3 1.3 2.2-2.4"></path></svg></sc-if>
+              <sc-if value="{{ n.isMore }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="12" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="18" cy="12" r="1.7"></circle></svg></sc-if>
+              <sc-if value="{{ n.hasBadge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-4px;right:-8px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--danger);color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center">{{ n.badge }}</span></sc-if>
+            </span>
+            <span style="{{ n.labelSt }}">{{ n.label }}</span>
+          </button>
+        </sc-for>
+      </nav>
+
+      <main style="{{ mainStyle }}">
+        <div style="{{ screenStyle }}">
+
+          <sc-if value="{{ showTopBar }}" hint-placeholder-val="{{ true }}">
+            <header style="display:flex;align-items:center;gap:12px;padding:4px 0 2px">
+              <div style="width:38px;height:38px;border-radius:999px;background:linear-gradient(150deg,#7C5CFF,#FF8A5B);display:grid;place-items:center;font-size:14px;font-weight:700;box-shadow:var(--inset);cursor:pointer" onClick="{{ goProfile }}">DR</div>
+              <div style="flex:1;min-width:0;font-size:26px;font-weight:700;letter-spacing:-.02em">{{ headerTitle }}</div>
+              <sc-if value="{{ isHabitsScreen }}" hint-placeholder-val="{{ false }}">
+                <button style="width:38px;height:38px;border-radius:999px;background:var(--g2);border:1px solid var(--gbd);backdrop-filter:var(--gb);display:grid;place-items:center;transition:background .18s" style-hover="background:var(--g3)" style-active="transform:scale(.97)" onClick="{{ toggleHabitsView }}">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="4.5" width="17" height="16" rx="3"></rect><path d="M3.5 9.5h17M8 4.5v-2M16 4.5v-2"></path></svg>
+                </button>
+              </sc-if>
+              <button style="position:relative;width:38px;height:38px;border-radius:999px;background:var(--g2);border:1px solid var(--gbd);backdrop-filter:var(--gb);display:grid;place-items:center;transition:background .18s" style-hover="background:var(--g3)" style-active="transform:scale(.97)" onClick="{{ notify }}">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M18 15.5V11a6 6 0 10-12 0v4.5L4.5 18h15L18 15.5z"></path><path d="M10 20.5a2.2 2.2 0 004 0"></path></svg>
+                <span style="position:absolute;top:-2px;right:-2px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--danger);font-size:10px;font-weight:700;display:grid;place-items:center">3</span>
+              </button>
+              <button style="width:38px;height:38px;border-radius:999px;background:var(--g2);border:1px solid var(--gbd);backdrop-filter:var(--gb);display:grid;place-items:center;transition:background .18s" style-hover="background:var(--g3)" style-active="transform:scale(.97)" onClick="{{ goSettings }}">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"></circle><path d="M12 3.5v2.2M12 18.3v2.2M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M3.5 12h2.2M18.3 12h2.2M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"></path></svg>
+              </button>
+            </header>
+          </sc-if>
+
+          <sc-if value="{{ showToday }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="padding:18px 16px;border-radius:20px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset);display:flex;align-items:center;gap:16px">
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px">
+                  <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3);text-transform:uppercase">{{ todayDate }}</div>
+                  <div style="font-size:22px;font-weight:700;letter-spacing:-.02em">{{ t.greeting }}</div>
+                  <div style="font-size:15px;color:var(--t2);text-wrap:pretty">{{ todaySummary }}</div>
+                </div>
+                <div style="position:relative;width:82px;height:82px;flex:none">
+                  <svg width="82" height="82" viewBox="0 0 82 82" style="transform:rotate(-90deg)">
+                    <circle cx="41" cy="41" r="34" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="8"></circle>
+                    <circle cx="41" cy="41" r="34" fill="none" stroke="#34D399" stroke-width="8" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="{{ ringOffset }}" style="transition:stroke-dashoffset .7s cubic-bezier(.2,0,0,1)"></circle>
+                  </svg>
+                  <div style="position:absolute;inset:0;display:grid;place-items:center;font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em">{{ dayPct }}</div>
+                </div>
+              </div>
+
+              <sc-if value="{{ allDone }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:28px 20px;border-radius:20px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset);display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">
+                  <div style="width:72px;height:72px;border-radius:999px;background:radial-gradient(circle at 50% 35%,rgba(52,211,153,.45),rgba(52,211,153,.08));display:grid;place-items:center;animation:msPop .5s cubic-bezier(.2,0,0,1)">
+                    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.8l4.4 4.4L19 7.6"></path></svg>
+                  </div>
+                  <div style="font-size:19px;font-weight:700">{{ t.allDone }}</div>
+                  <div style="font-size:14px;color:var(--t2);max-width:280px;text-wrap:pretty">{{ t.allDoneSub }}</div>
+                </div>
+              </sc-if>
+
+              <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3);padding:8px 2px 0">{{ t.todayHabits }}</div>
+              <div style="display:flex;gap:10px;overflow-x:auto;padding:2px;scrollbar-width:none">
+                <sc-for list="{{ todayHabits }}" as="h" hint-placeholder-count="4">
+                  <button style="{{ h.st }}" style-active="transform:scale(.97)" onClick="{{ h.tap }}">
+                    <span style="{{ h.dotSt }}">{{ h.emoji }}</span>
+                    <span style="font-size:13px;font-weight:600;white-space:nowrap">{{ h.name }}</span>
+                    <span style="{{ h.checkSt }}">✓</span>
+                  </button>
+                </sc-for>
+              </div>
+
+              <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3);padding:8px 2px 0">{{ t.todayTasks }}</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ todayTasks }}" as="k" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:20px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset);transition:background .18s,transform .18s" style-hover="background:var(--g3);transform:translateY(-2px)">
+                    <button style="{{ k.boxSt }}" style-active="transform:scale(.9)" onClick="{{ k.tap }}"><span style="{{ k.tickSt }}">✓</span></button>
+                    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+                      <div style="{{ k.titleSt }}">{{ k.title }}</div>
+                      <div style="display:flex;align-items:center;gap:8px">
+                        <span style="{{ k.priSt }}">{{ k.pri }}</span>
+                        <sc-if value="{{ k.hasGoal }}" hint-placeholder-val="{{ false }}"><span style="{{ k.goalSt }}">{{ k.goalName }}</span></sc-if>
+                      </div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3);padding:8px 2px 0">{{ t.goalsToUpdate }}</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ staleGoals }}" as="g" hint-placeholder-count="2">
+                  <button style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:20px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset);text-align:left;transition:background .18s,transform .18s" style-hover="background:var(--g3);transform:translateY(-2px)" style-active="transform:scale(.97)" onClick="{{ g.open }}">
+                    <span style="{{ g.iconSt }}">{{ g.emoji }}</span>
+                    <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                      <span style="font-size:15px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ g.title }}</span>
+                      <span style="font-size:13px;font-weight:500;color:var(--t3)">{{ g.staleNote }}</span>
+                    </span>
+                    <span style="font-size:13px;font-weight:600;color:var(--t2)">›</span>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ showGoals }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:18px">
+              <sc-for list="{{ goalGroups }}" as="grp" hint-placeholder-count="3">
+                <div style="display:flex;flex-direction:column;gap:12px">
+                  <div style="display:flex;align-items:center;gap:8px;padding:0 2px">
+                    <span style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3)">{{ grp.label }}</span>
+                    <span style="min-width:19px;height:19px;padding:0 5px;border-radius:999px;background:var(--g2);border:1px solid var(--gbd);font-size:11px;font-weight:600;color:var(--t2);display:grid;place-items:center">{{ grp.count }}</span>
+                  </div>
+                  <div style="{{ gridStyle }}">
+                    <sc-for list="{{ grp.goals }}" as="g" hint-placeholder-count="2">
+                      <div style="{{ g.cardSt }}" style-hover="transform:translateY(-2px);background:var(--g3)" style-active="transform:scale(.97)" style-focus="outline:2px solid var(--acc);outline-offset:2px" tabIndex="0" onClick="{{ g.open }}">
+                        <div style="display:flex;align-items:flex-start;gap:12px">
+                          <span style="{{ g.iconSt }}">{{ g.emoji }}</span>
+                          <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+                            <span style="font-size:17px;font-weight:600;letter-spacing:-.01em;text-wrap:pretty">{{ g.title }}</span>
+                            <span style="font-size:15px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ g.desc }}</span>
+                          </span>
+                          <span style="{{ g.statusSt }}">{{ g.statusLabel }}</span>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:7px">
+                          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+                            <span style="font-size:13px;font-weight:600;color:var(--t2);font-variant-numeric:tabular-nums">{{ g.rawLabel }}</span>
+                            <span style="{{ g.pctSt }}">{{ g.pctLabel }}</span>
+                          </div>
+                          <div style="height:6px;border-radius:999px;background:rgba(255,255,255,.10);overflow:hidden">
+                            <div style="{{ g.barSt }}"></div>
+                          </div>
+                          <sc-if value="{{ g.hasNext }}" hint-placeholder-val="{{ false }}">
+                            <div style="display:flex;align-items:center;gap:8px;padding-top:2px">
+                              <span style="width:14px;height:14px;border-radius:999px;border:1.5px solid rgba(255,255,255,.35);flex:none"></span>
+                              <span style="font-size:13px;font-weight:500;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ g.nextMs }}</span>
+                            </div>
+                          </sc-if>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                          <span style="{{ g.catSt }}">{{ g.catName }}</span>
+                          <span style="font-size:13px;font-weight:500;color:var(--t3)">·</span>
+                          <span style="font-size:13px;font-weight:500;color:var(--t3)">{{ g.left }}</span>
+                          <button style="margin-left:auto;height:32px;padding:0 14px;border-radius:999px;background:var(--g2);border:1px solid var(--gbd);font-size:13px;font-weight:600;display:flex;align-items:center;gap:5px;transition:background .18s" style-hover="background:var(--g3)" style-active="transform:scale(.97)" onClick="{{ g.log }}">{{ t.update }} ›</button>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ showHabitsWeek }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:999px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset)">
+                <button style="width:30px;height:30px;border-radius:999px;background:var(--g2);display:grid;place-items:center;font-size:15px" style-hover="background:var(--g3)" style-active="transform:scale(.97)" onClick="{{ prevWeek }}">‹</button>
+                <div style="flex:1;text-align:center;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums">{{ weekRange }}</div>
+                <button style="width:30px;height:30px;border-radius:999px;background:var(--g2);display:grid;place-items:center;font-size:15px" style-hover="background:var(--g3)" style-active="transform:scale(.97)" onClick="{{ nextWeek }}">›</button>
+                <button style="{{ todayPillSt }}" style-active="transform:scale(.97)" onClick="{{ thisWeek }}">{{ t.todayPill }}</button>
+              </div>
+              <div style="{{ gridStyle }}">
+                <sc-for list="{{ weekHabits }}" as="h" hint-placeholder-count="4">
+                  <div style="padding:16px;border-radius:20px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset);display:flex;flex-direction:column;gap:12px;transition:background .18s,transform .18s" style-hover="background:var(--g3);transform:translateY(-2px)">
+                    <div style="display:flex;align-items:center;gap:10px">
+                      <span style="{{ h.iconSt }}">{{ h.emoji }}</span>
+                      <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                        <span style="font-size:17px;font-weight:600;letter-spacing:-.01em">{{ h.name }}</span>
+                        <span style="font-size:13px;font-weight:500;color:var(--t3)">{{ h.typeLabel }}</span>
+                      </span>
+                      <span style="{{ h.streakSt }}"><span style="{{ h.fireSt }}">🔥</span> {{ h.streak }}</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">
+                      <sc-for list="{{ h.cells }}" as="c" hint-placeholder-count="7">
+                        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+                          <span style="{{ c.dayLabelSt }}">{{ c.day }}</span>
+                          <button style="{{ c.st }}" style-active="transform:scale(.94)" style-focus="outline:2px solid var(--acc);outline-offset:2px" onClick="{{ c.tap }}">{{ c.content }}</button>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ showHabitsYear }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <sc-for list="{{ yearHabits }}" as="h" hint-placeholder-count="4">
+                <div style="padding:16px;border-radius:20px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset);display:flex;flex-direction:column;gap:14px">
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <span style="{{ h.iconSt }}">{{ h.emoji }}</span>
+                    <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                      <span style="font-size:17px;font-weight:600;letter-spacing:-.01em">{{ h.name }}</span>
+                      <span style="font-size:13px;font-weight:500;color:var(--t3);font-variant-numeric:tabular-nums">{{ h.totalLabel }}</span>
+                    </span>
+                    <span style="{{ h.streakSt }}"><span style="{{ h.fireSt }}">🔥</span> {{ h.streak }}</span>
+                    <button style="{{ h.quickSt }}" style-active="transform:scale(.94)" onClick="{{ h.quick }}">{{ h.quickLabel }}</button>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:5px;width:100%">
+                    <div style="display:flex;gap:3px;height:12px;width:100%">
+                      <sc-for list="{{ h.weeks }}" as="w" hint-placeholder-count="33"><span style="{{ w.labelSt }}">{{ w.month }}</span></sc-for>
+                    </div>
+                    <div style="display:flex;gap:3px;width:100%">
+                      <sc-for list="{{ h.weeks }}" as="w" hint-placeholder-count="33">
+                        <div style="flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:3px">
+                          <sc-for list="{{ w.days }}" as="c" hint-placeholder-count="7"><span style="{{ c.st }}"></span></sc-for>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ showTasks }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:18px">
+              <sc-for list="{{ taskGroups }}" as="grp" hint-placeholder-count="4">
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <div style="display:flex;align-items:center;gap:8px;padding:0 2px">
+                    <span style="{{ grp.labelSt }}">{{ grp.label }}</span>
+                    <span style="min-width:19px;height:19px;padding:0 5px;border-radius:999px;background:var(--g2);border:1px solid var(--gbd);font-size:11px;font-weight:600;color:var(--t2);display:grid;place-items:center">{{ grp.count }}</span>
+                  </div>
+                  <sc-if value="{{ grp.empty }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:22px 16px;border-radius:20px;background:var(--g1);border:1px dashed var(--gbd);display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center">
+                      <div style="width:44px;height:44px;border-radius:14px;background:var(--g2);display:grid;place-items:center;font-size:18px;color:var(--t3)">+</div>
+                      <div style="font-size:14px;color:var(--t2);text-wrap:pretty">{{ grp.emptyCopy }}</div>
+                      <button style="height:34px;padding:0 16px;border-radius:999px;background:var(--g2);border:1px solid var(--gbd);font-size:13px;font-weight:600" style-hover="background:var(--g3)" onClick="{{ openTaskSheet }}">{{ grp.emptyCta }}</button>
+                    </div>
+                  </sc-if>
+                  <div style="{{ gridStyle }}">
+                    <sc-for list="{{ grp.tasks }}" as="k" hint-placeholder-count="2">
+                      <div style="padding:14px 16px;border-radius:20px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset);display:flex;flex-direction:column;gap:10px;transition:background .18s,transform .18s" style-hover="background:var(--g3);transform:translateY(-2px)">
+                        <div style="display:flex;align-items:flex-start;gap:12px">
+                          <button style="{{ k.boxSt }}" style-active="transform:scale(.9)" style-focus="outline:2px solid var(--acc);outline-offset:2px" onClick="{{ k.tap }}"><span style="{{ k.tickSt }}">✓</span></button>
+                          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+                            <div style="{{ k.titleSt }}">{{ k.title }}</div>
+                            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                              <span style="{{ k.priSt }}">{{ k.pri }}</span>
+                              <sc-if value="{{ k.hasGoal }}" hint-placeholder-val="{{ false }}"><span style="{{ k.goalSt }}">{{ k.goalName }}</span></sc-if>
+                              <sc-if value="{{ k.hasDue }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;font-weight:500;color:var(--t3);font-variant-numeric:tabular-nums">{{ k.due }}</span></sc-if>
+                              <sc-if value="{{ k.hasRec }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;font-weight:500;color:var(--t3)">↻ {{ k.rec }}</span></sc-if>
+                            </div>
+                          </div>
+                          <div style="display:flex;gap:6px">
+                            <button style="width:30px;height:30px;border-radius:999px;background:rgba(52,211,153,.16);color:#34D399;font-size:14px;display:grid;place-items:center" style-hover="background:rgba(52,211,153,.28)" style-active="transform:scale(.94)" onClick="{{ k.tap }}">✓</button>
+                            <button style="width:30px;height:30px;border-radius:999px;background:rgba(255,69,58,.16);color:#FF453A;font-size:15px;display:grid;place-items:center" style-hover="background:rgba(255,69,58,.28)" style-active="transform:scale(.94)" onClick="{{ k.del }}">×</button>
+                          </div>
+                        </div>
+                        <sc-if value="{{ k.hasSubs }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex;flex-direction:column;gap:8px;padding-left:34px">
+                            <button style="font-size:13px;font-weight:600;color:var(--t2);align-self:flex-start;display:flex;align-items:center;gap:6px" style-hover="color:var(--t1)" onClick="{{ k.toggleSubs }}"><span style="{{ k.chevSt }}">›</span>{{ k.subsLabel }}</button>
+                            <sc-if value="{{ k.subsOpen }}" hint-placeholder-val="{{ false }}">
+                              <div style="display:flex;flex-direction:column;gap:8px">
+                                <sc-for list="{{ k.subs }}" as="s" hint-placeholder-count="2">
+                                  <div style="display:flex;align-items:center;gap:10px">
+                                    <span style="{{ s.boxSt }}"></span>
+                                    <span style="{{ s.titleSt }}">{{ s.title }}</span>
+                                  </div>
+                                </sc-for>
+                              </div>
+                            </sc-if>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ showMore }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;gap:14px;padding:16px;border-radius:20px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset)">
+                <div style="width:56px;height:56px;border-radius:999px;background:linear-gradient(150deg,#7C5CFF,#FF8A5B);display:grid;place-items:center;font-size:19px;font-weight:700">DR</div>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+                  <div style="font-size:18px;font-weight:700;letter-spacing:-.01em">Daniela Restrepo</div>
+                  <div style="font-size:14px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">daniela@correo.com</div>
+                </div>
+                <span style="font-size:15px;color:var(--t3)">›</span>
+              </div>
+              <div style="{{ gridStyle }}">
+                <sc-for list="{{ moreItems }}" as="m" hint-placeholder-count="10">
+                  <button style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:20px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset);text-align:left;transition:background .18s,transform .18s" style-hover="background:var(--g3);transform:translateY(-2px)" style-active="transform:scale(.97)" onClick="{{ m.tap }}">
+                    <span style="width:34px;height:34px;border-radius:10px;background:var(--g2);display:grid;place-items:center;font-size:16px;flex:none">{{ m.icon }}</span>
+                    <span style="flex:1;min-width:0;font-size:16px;font-weight:600">{{ m.label }}</span>
+                    <sc-if value="{{ m.hasValue }}" hint-placeholder-val="{{ false }}"><span style="font-size:14px;font-weight:500;color:var(--t3)">{{ m.value }}</span></sc-if>
+                    <span style="font-size:15px;color:var(--t3)">›</span>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ showSettings }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:20px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <button style="width:38px;height:38px;border-radius:999px;background:var(--g2);border:1px solid var(--gbd);backdrop-filter:var(--gb);font-size:18px;display:grid;place-items:center" style-hover="background:var(--g3)" style-active="transform:scale(.97)" onClick="{{ goBackFromSettings }}">‹</button>
+                <div style="font-size:26px;font-weight:700;letter-spacing:-.02em">{{ t.settings }}</div>
+              </div>
+              <sc-for list="{{ settingsGroups }}" as="s" hint-placeholder-count="5">
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3);padding:0 2px">{{ s.title }}</div>
+                  <div style="border-radius:20px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset);overflow:hidden">
+                    <sc-for list="{{ s.rows }}" as="r" hint-placeholder-count="4">
+                      <button style="{{ r.st }}" style-hover="background:var(--g2)" onClick="{{ r.tap }}">
+                        <span style="width:32px;height:32px;border-radius:10px;background:var(--g2);display:grid;place-items:center;font-size:15px;flex:none">{{ r.icon }}</span>
+                        <span style="{{ r.labelSt }}">{{ r.label }}</span>
+                        <sc-if value="{{ r.isSwitch }}" hint-placeholder-val="{{ false }}"><span style="{{ r.switchSt }}"><span style="{{ r.knobSt }}"></span></span></sc-if>
+                        <sc-if value="{{ r.hasValue }}" hint-placeholder-val="{{ false }}"><span style="font-size:14px;font-weight:500;color:var(--t3);white-space:nowrap">{{ r.value }}</span></sc-if>
+                        <sc-if value="{{ r.hasChevron }}" hint-placeholder-val="{{ false }}"><span style="font-size:15px;color:var(--t3)">›</span></sc-if>
+                      </button>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+        </div>
+      </main>
+
+      <div style="{{ detailWrapStyle }}">
+        <sc-if value="{{ hasDetail }}" hint-placeholder-val="{{ false }}">
+          <div style="{{ detailTintStyle }}"></div>
+          <div style="{{ detailInnerStyle }}">
+            <div style="display:flex;align-items:center;gap:12px">
+              <button style="width:38px;height:38px;border-radius:999px;background:var(--g2);border:1px solid var(--gbd);backdrop-filter:var(--gb);font-size:18px;display:grid;place-items:center;flex:none" style-hover="background:var(--g3)" style-active="transform:scale(.97)" onClick="{{ closeGoal }}">‹</button>
+              <div style="flex:1;min-width:0;text-align:center;font-size:17px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ d.title }}</div>
+              <button style="width:38px;height:38px;border-radius:999px;background:var(--g2);border:1px solid var(--gbd);backdrop-filter:var(--gb);display:grid;place-items:center;flex:none" style-hover="background:var(--g3)" style-active="transform:scale(.97)" onClick="{{ openEditGoal }}">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10a2.5 2.5 0 00-3.5-3.5L4.5 16.5 4 20z"></path></svg>
+              </button>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <span style="{{ d.chipSt }}">{{ d.chipLabel }}</span>
+              <span style="font-size:14px;font-weight:500;color:var(--t2)">{{ d.timeframe }}</span>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:12px;padding:18px 16px;border-radius:20px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset)">
+              <div style="display:flex;align-items:flex-end;gap:10px">
+                <div style="flex:1;min-width:0;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
+                  <span style="font-size:40px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1">{{ d.big }}</span>
+                  <span style="font-size:16px;font-weight:500;color:var(--t2);font-variant-numeric:tabular-nums">{{ d.small }}</span>
+                </div>
+                <span style="{{ d.pctSt }}">{{ d.pct }}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;font-weight:500;color:var(--t3)">
+                <span style="font-variant-numeric:tabular-nums">{{ d.delta }}</span><span>·</span><span>{{ d.left }}</span><span>·</span>
+                <span style="{{ d.trendSt }}">↗ {{ d.trend }}</span>
+              </div>
+              <div style="position:relative;height:14px;display:flex;align-items:center">
+                <div style="width:100%;height:8px;border-radius:999px;background:rgba(255,255,255,.10);overflow:hidden">
+                  <div style="{{ d.barSt }}"></div>
+                </div>
+                <div style="{{ d.knobSt }}"></div>
+              </div>
+              <div style="font-size:13px;font-weight:500;color:var(--t3);text-align:right;font-variant-numeric:tabular-nums">{{ d.targetDate }}</div>
+            </div>
+
+            <button style="{{ d.ctaSt }}" style-hover="filter:brightness(1.08);transform:scale(1.02)" style-active="transform:scale(.97)" style-focus="outline:2px solid var(--acc);outline-offset:2px" onClick="{{ d.cta }}">{{ d.ctaLabel }}</button>
+
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3)">{{ t.why }}</div>
+              <div style="padding:16px;border-radius:20px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset);font-size:15px;line-height:1.5;color:var(--t2);text-wrap:pretty">{{ d.why }}</div>
+            </div>
+
+            <sc-if value="{{ d.isMilestone }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3)">{{ d.msLabel }}</div>
+                <div style="position:relative;display:flex;flex-direction:column;gap:8px">
+                  <sc-for list="{{ d.milestones }}" as="m" hint-placeholder-count="6">
+                    <button style="{{ m.st }}" style-active="transform:scale(.98)" style-focus="outline:2px solid var(--acc);outline-offset:2px" onClick="{{ m.tap }}">
+                      <span style="{{ m.lineSt }}"></span>
+                      <span style="{{ m.dotSt }}"><span style="{{ m.tickSt }}">✓</span></span>
+                      <span style="{{ m.titleSt }}">{{ m.title }}</span>
+                      <sc-if value="{{ m.isNext }}" hint-placeholder-val="{{ false }}"><span style="padding:3px 9px;border-radius:999px;background:var(--g2);border:1px solid var(--gbd);font-size:10px;font-weight:600;letter-spacing:.09em;color:var(--t2);flex:none">{{ t.next }}</span></sc-if>
+                    </button>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ d.hasUpdates }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3)">{{ t.updates }}</div>
+                <div style="border-radius:20px;background:var(--g1);border:1px solid var(--gbd);backdrop-filter:var(--gb);box-shadow:var(--inset);overflow:hidden">
+                  <sc-for list="{{ d.updates }}" as="u" hint-placeholder-count="3">
+                    <div style="{{ u.st }}">
+                      <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+                        <span style="font-size:16px;font-weight:700;font-variant-numeric:tabular-nums">{{ u.value }}</span>
+                        <span style="font-size:14px;color:var(--t2);text-wrap:pretty">{{ u.note }}</span>
+                      </span>
+                      <span style="font-size:13px;font-weight:500;color:var(--t3);white-space:nowrap;font-variant-numeric:tabular-nums">{{ u.date }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
+            <div style="display:flex;flex-direction:column;gap:10px;padding-bottom:8px">
+              <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3)">{{ t.status }}</div>
+              <div style="display:flex;gap:10px">
+                <button style="flex:1;height:50px;border-radius:16px;background:rgba(52,211,153,.14);border:1px solid rgba(52,211,153,.32);color:#34D399;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .18s" style-hover="background:rgba(52,211,153,.24)" style-active="transform:scale(.97)" onClick="{{ d.markDone }}">✓ {{ t.complete }}</button>
+                <button style="flex:1;height:50px;border-radius:16px;background:rgba(242,201,76,.14);border:1px solid rgba(242,201,76,.32);color:#F2C94C;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .18s" style-hover="background:rgba(242,201,76,.24)" style-active="transform:scale(.97)" onClick="{{ d.markPaused }}">⏸ {{ t.pause }}</button>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+
+      <button style="{{ fabStyle }}" style-hover="filter:brightness(1.08)" style-active="transform:scale(.94)" style-focus="outline:2px solid #fff;outline-offset:3px" onClick="{{ fabTap }}">
+        <span style="{{ fabIconStyle }}">+</span>
+      </button>
+    </div>
+  </sc-if>
+
+  <div style="{{ sheetScrimStyle }}" onClick="{{ closeSheet }}"></div>
+  <div style="{{ sheetStyle }}">
+    <div style="width:38px;height:4px;border-radius:999px;background:rgba(255,255,255,.28);margin:0 auto 14px"></div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <div style="flex:1;min-width:0;font-size:22px;font-weight:700;letter-spacing:-.02em">{{ sheetTitle }}</div>
+      <button style="width:34px;height:34px;border-radius:999px;background:var(--g2);border:1px solid var(--gbd);font-size:16px;display:grid;place-items:center" style-hover="background:var(--g3)" onClick="{{ closeSheet }}">×</button>
+    </div>
+
+    <sc-if value="{{ sheetIsLog }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="padding:18px 16px;border-radius:20px;background:var(--g2);border:1px solid var(--gbd);display:flex;flex-direction:column;gap:6px;align-items:center">
+          <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3)">{{ logGoalTitle }}</div>
+          <div style="display:flex;align-items:baseline;gap:8px">
+            <span style="font-size:44px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1">{{ logValue }}</span>
+            <span style="font-size:16px;font-weight:500;color:var(--t2)">{{ logUnit }}</span>
+          </div>
+        </div>
+        <input placeholder="{{ t.notePlaceholder }}" style="height:48px;border-radius:14px;background:var(--g2);border:1px solid var(--gbd);padding:0 14px;font-size:15px;outline:none" style-focus="outline:2px solid var(--acc);outline-offset:2px" />
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+          <sc-for list="{{ keypad }}" as="k" hint-placeholder-count="12">
+            <button style="height:52px;border-radius:14px;background:var(--g2);border:1px solid var(--gbd);font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;transition:background .12s" style-hover="background:var(--g3)" style-active="transform:scale(.96)" onClick="{{ k.tap }}">{{ k.label }}</button>
+          </sc-for>
+        </div>
+        <button style="{{ logSaveSt }}" style-hover="filter:brightness(1.08)" style-active="transform:scale(.97)" onClick="{{ saveLog }}">{{ t.save }}</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ sheetIsGoal }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <input placeholder="{{ t.goalTitlePh }}" style="height:50px;border-radius:14px;background:var(--g2);border:1px solid var(--gbd);padding:0 14px;font-size:16px;font-weight:600;outline:none" style-focus="outline:2px solid var(--acc);outline-offset:2px" />
+        <textarea placeholder="{{ t.goalDescPh }}" rows="2" style="border-radius:14px;background:var(--g2);border:1px solid var(--gbd);padding:12px 14px;font-size:15px;outline:none;resize:none" style-focus="outline:2px solid var(--acc);outline-offset:2px"></textarea>
+        <textarea placeholder="{{ t.goalWhyPh }}" rows="2" style="border-radius:14px;background:var(--g2);border:1px solid var(--gbd);padding:12px 14px;font-size:15px;outline:none;resize:none" style-focus="outline:2px solid var(--acc);outline-offset:2px"></textarea>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3)">{{ t.category }}</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+          <sc-for list="{{ catChips }}" as="c" hint-placeholder-count="6">
+            <button style="{{ c.st }}" style-active="transform:scale(.97)" onClick="{{ c.tap }}"><span style="font-size:16px">{{ c.emoji }}</span><span style="font-size:13px;font-weight:600">{{ c.name }}</span></button>
+          </sc-for>
+        </div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3)">{{ t.timeframe }}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{ tfChips }}" as="c" hint-placeholder-count="5"><button style="{{ c.st }}" onClick="{{ c.tap }}">{{ c.label }}</button></sc-for>
+        </div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3)">{{ t.goalType }}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{ typeChips }}" as="c" hint-placeholder-count="4"><button style="{{ c.st }}" onClick="{{ c.tap }}">{{ c.label }}</button></sc-for>
+        </div>
+        <div style="display:flex;gap:10px">
+          <input placeholder="{{ t.targetValuePh }}" style="flex:1;height:48px;border-radius:14px;background:var(--g2);border:1px solid var(--gbd);padding:0 14px;font-size:15px;outline:none;font-variant-numeric:tabular-nums" />
+          <input placeholder="{{ t.unitPh }}" style="width:110px;height:48px;border-radius:14px;background:var(--g2);border:1px solid var(--gbd);padding:0 14px;font-size:15px;outline:none" />
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-radius:16px;background:var(--g2);border:1px solid var(--gbd)">
+          <span style="font-size:15px;font-weight:500">{{ t.reminder }}</span>
+          <span style="width:46px;height:28px;border-radius:999px;background:rgba(255,138,61,.7);position:relative;flex:none"><span style="position:absolute;top:3px;left:21px;width:22px;height:22px;border-radius:999px;background:#fff"></span></span>
+        </div>
+        <button style="height:54px;border-radius:16px;background:#FF8A3D;color:#1A1A1A;font-size:16px;font-weight:700" style-hover="filter:brightness(1.08)" style-active="transform:scale(.97)" onClick="{{ saveSheet }}">{{ t.save }}</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ sheetIsHabit }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;gap:10px">
+          <button style="width:56px;height:50px;border-radius:14px;background:var(--g2);border:1px solid var(--gbd);font-size:22px" style-hover="background:var(--g3)">🧘</button>
+          <input placeholder="{{ t.habitNamePh }}" style="flex:1;height:50px;border-radius:14px;background:var(--g2);border:1px solid var(--gbd);padding:0 14px;font-size:16px;font-weight:600;outline:none" style-focus="outline:2px solid var(--acc);outline-offset:2px" />
+        </div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3)">{{ t.color }}</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <sc-for list="{{ colorChips }}" as="c" hint-placeholder-count="7"><button style="{{ c.st }}" onClick="{{ c.tap }}"></button></sc-for>
+        </div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3)">{{ t.habitType }}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{ habitTypeChips }}" as="c" hint-placeholder-count="3"><button style="{{ c.st }}" onClick="{{ c.tap }}">{{ c.label }}</button></sc-for>
+        </div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--t3)">{{ t.frequency }}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{ freqChips }}" as="c" hint-placeholder-count="3"><button style="{{ c.st }}" onClick="{{ c.tap }}">{{ c.label }}</button></sc-for>
+        </div>
+        <div style="display:flex;gap:6px">
+          <sc-for list="{{ dayToggles }}" as="c" hint-placeholder-count="7"><button style="{{ c.st }}" onClick="{{ c.tap }}">{{ c.label }}</button></sc-for>
+        </div>
+        <button style="height:54px;border-radius:16px;background:#7C5CFF;color:#fff;font-size:16px;font-weight:700" style-hover="filter:brightness(1.08)" style-active="transform:scale(.97)" onClick="{{ saveSheet }}">{{ t.save }}</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ sheetIsTask }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <input placeholder="{{ t.taskTitlePh }}" style="height:50px;border-radius:14px;background:var(--g2);border:1px solid var(--gbd);padding:0 14px;font-size:16px;font-weight:600;outline:none" style-focus="outline:2px solid var(--acc);outline-offset:2px" />
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{ priChips }}" as="c" hint-placeholder-count="3"><button style="{{ c.st }}" onClick="{{ c.tap }}">{{ c.label }}</button></sc-for>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:16px;background:var(--g2);border:1px solid var(--gbd)">
+          <span style="font-size:15px;font-weight:500">{{ t.dueDate }}</span><span style="font-size:15px;color:var(--t2);font-variant-numeric:tabular-nums">{{ todayShort }}</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:16px;background:var(--g2);border:1px solid var(--gbd)">
+          <span style="font-size:15px;font-weight:500">{{ t.linkGoal }}</span><span style="font-size:15px;color:var(--t2)">{{ t.none }}</span>
+        </div>
+        <button style="height:54px;border-radius:16px;background:#FF8A3D;color:#1A1A1A;font-size:16px;font-weight:700" style-hover="filter:brightness(1.08)" style-active="transform:scale(.97)" onClick="{{ saveSheet }}">{{ t.save }}</button>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="{{ toastStyle }}">
+    <span style="flex:1;min-width:0;font-size:14px;font-weight:500">{{ toastMsg }}</span>
+    <button style="font-size:14px;font-weight:700;color:#8FA8FF;flex:none" onClick="{{ undoToast }}">{{ t.undo }}</button>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:420,&quot;height&quot;:900},&quot;locale&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;es&quot;,&quot;en&quot;],&quot;default&quot;:&quot;es&quot;,&quot;tsType&quot;:&quot;'es' | 'en'&quot;,&quot;section&quot;:&quot;Idioma&quot;},&quot;reduceTransparency&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Accesibilidad&quot;}}">
+class Component extends DCLogic {
+  state = {
+    screen: 'today', goalId: null, habitsView: 'week', sheet: null, sheetGoal: null,
+    mounted: false, toast: null, weekOffset: 0, subsOpen: {}, entries: {}, msDone: {},
+    taskDone: {}, taskGone: {}, locale: null, onbStep: 1, w: 1440, logVal: '', popped: {},
+    onbSel: { growth: true, health: true }, sel: { cat: 'growth', tf: 'year', type: 'numeric', htype: 'binary', freq: 'daily', pri: 'med', color: '#FF8A5B', days: {} }
+  };
+
+  cats = {
+    financial: { emoji: '💰', color: '#F2C94C', es: 'Finanzas', en: 'Finance' },
+    growth:    { emoji: '📚', color: '#A78BFA', es: 'Crecimiento', en: 'Growth' },
+    career:    { emoji: '💼', color: '#6C8CF5', es: 'Carrera', en: 'Career' },
+    health:    { emoji: '🏃', color: '#34D399', es: 'Salud', en: 'Health' },
+    personal:  { emoji: '🌿', color: '#FF8A5B', es: 'Personal', en: 'Personal' },
+    creative:  { emoji: '🎨', color: '#F472B6', es: 'Creativo', en: 'Creative' }
+  };
+
+  goals = [
+    { id: 'g1', cat: 'growth', type: 'numeric', tf: 'month', status: 'active-up', cur: 3, target: 4,
+      unit: { es: 'libros', en: 'books' }, title: { es: 'Leer 4 libros este mes', en: 'Read 4 books this month' },
+      desc: { es: 'Un libro por semana para volver al hábito de leer', en: 'A book a week to rebuild the reading habit' },
+      why: { es: 'Leer me saca del piloto automático y me trae ideas nuevas para el trabajo y para mí.', en: 'Reading pulls me out of autopilot and brings fresh ideas to my work and my life.' },
+      left: { es: '4 semanas restantes', en: '4 weeks left' }, td: '2026-08-31', trend: 'improving', delta: 3,
+      updates: [ { v: 3, d: '2026-08-10', note: { es: 'Terminé "Momentum" en dos sentadas', en: 'Finished "Momentum" in two sittings' } },
+                 { v: 2, d: '2026-08-04', note: { es: 'Voy al día con el plan del mes', en: 'On track with the month plan' } },
+                 { v: 1, d: '2026-07-29', note: { es: 'Arranqué la primera semana', en: 'Started week one' } } ] },
+    { id: 'g2', cat: 'growth', type: 'percent', tf: 'quarter', status: 'active', cur: 65, target: 100,
+      unit: { es: '%', en: '%' }, title: { es: 'Terminar curso básico de inglés', en: 'Finish beginner English course' },
+      desc: { es: 'Módulo 7 de 10, con práctica de conversación', en: 'Module 7 of 10, with speaking practice' },
+      why: { es: 'Quiero moverme sin fricción en reuniones con el equipo de Londres.', en: 'I want zero friction in meetings with the London team.' },
+      left: { es: '2 meses restantes', en: '2 months left' }, td: '2026-10-31', trend: 'steady', delta: 65,
+      updates: [ { v: 65, d: '2026-08-08', note: { es: 'Módulo 7 completo', en: 'Module 7 done' } },
+                 { v: 50, d: '2026-07-20', note: { es: 'Mitad del curso', en: 'Halfway there' } } ] },
+    { id: 'g3', cat: 'financial', type: 'numeric', tf: 'year', status: 'active-up', cur: 18000, target: 25000,
+      unit: { es: 'USD', en: 'USD' }, title: { es: 'Ahorrar 25.000 USD este año', en: 'Save 25,000 USD this year' },
+      desc: { es: 'Fondo de emergencia y cuota inicial del apartamento', en: 'Emergency fund and apartment down payment' },
+      why: { es: 'Un año de gastos cubiertos es la libertad de decidir sin miedo en qué trabajar.', en: 'A year of expenses covered means choosing work without fear.' },
+      left: { es: '5 meses restantes', en: '5 months left' }, td: '2026-12-31', trend: 'improving', delta: 18000,
+      updates: [ { v: 18000, d: '2026-07-30', note: { es: 'Voy al día con el año', en: 'On track for the year' } },
+                 { v: 15500, d: '2026-06-30', note: { es: 'Bono semestral completo al ahorro', en: 'Full mid-year bonus to savings' } },
+                 { v: 12000, d: '2026-04-02', note: { es: 'Ahorro del Q2', en: 'Q2 savings' } },
+                 { v: 7500, d: '2026-02-01', note: { es: 'Arranque del año', en: 'Start of the year' } } ] },
+    { id: 'g4', cat: 'health', type: 'milestone', tf: 'year', status: 'active', cur: 3, target: 5,
+      unit: { es: 'hitos', en: 'milestones' }, title: { es: 'Correr una media maratón', en: 'Run a half marathon' },
+      desc: { es: 'Media de Bogotá, plan de 16 semanas', en: 'Bogotá half, 16-week plan' },
+      why: { es: 'Correr largo me enseña que la constancia rinde más que la motivación.', en: 'Long runs teach me consistency beats motivation.' },
+      left: { es: '3 meses restantes', en: '3 months left' }, td: '2026-11-15', trend: 'improving', delta: 3,
+      ms: [ { id: 'm1', done: false, t: { es: 'Completar entrenamiento de 18 km', en: 'Complete the 18 km long run' } },
+            { id: 'm2', done: false, t: { es: 'Bajar el ritmo a 5:10 min/km', en: 'Get pace down to 5:10 min/km' } },
+            { id: 'm3', done: true, t: { es: 'Correr 10 km sin parar', en: 'Run 10 km without stopping' } },
+            { id: 'm4', done: true, t: { es: 'Terminar 4 semanas de base', en: 'Finish 4 base weeks' } },
+            { id: 'm5', done: true, t: { es: 'Comprar zapatillas de carrera', en: 'Buy racing shoes' } } ] },
+    { id: 'g5', cat: 'career', type: 'milestone', tf: 'year', status: 'active-up', cur: 3, target: 6,
+      unit: { es: 'hitos', en: 'milestones' }, title: { es: 'Ascender a Ingeniero Senior', en: 'Get promoted to Senior Engineer' },
+      desc: { es: 'Carpeta de evidencias lista para el comité de diciembre', en: 'Evidence packet ready for the December committee' },
+      why: { es: 'Quiero que mi trabajo se mida por el impacto que dejo en el equipo, no por las horas.', en: 'I want my work measured by team impact, not hours.' },
+      left: { es: '6 meses restantes', en: '6 months left' }, td: '2027-02-06', trend: 'steady', delta: 3,
+      ms: [ { id: 'm1', done: false, t: { es: 'Completar formación en liderazgo', en: 'Complete leadership training' } },
+            { id: 'm2', done: false, t: { es: 'Recibir retroalimentación 360 positiva', en: 'Get positive 360 feedback' } },
+            { id: 'm3', done: false, t: { es: 'Conversar el ascenso con el jefe', en: 'Discuss the promotion with my manager' } },
+            { id: 'm4', done: true, t: { es: 'Liderar un proyecto de punta a punta', en: 'Lead a project end to end' } },
+            { id: 'm5', done: true, t: { es: 'Mentorear a 2 desarrolladores junior', en: 'Mentor 2 junior developers' } },
+            { id: 'm6', done: true, t: { es: 'Exponer en la charla técnica del equipo', en: 'Speak at the team tech talk' } } ] },
+    { id: 'g6', cat: 'creative', type: 'percent', tf: 'year', status: 'paused', cur: 40, target: 100,
+      unit: { es: '%', en: '%' }, title: { es: 'Renovar mi portafolio', en: 'Rebuild my portfolio' },
+      desc: { es: 'Seis casos de estudio escritos y maquetados', en: 'Six case studies written and laid out' },
+      why: { es: 'Contar bien lo que hago es la mitad del trabajo.', en: 'Telling the story well is half the work.' },
+      left: { es: '5 meses restantes', en: '5 months left' }, td: '2026-12-20', trend: 'behind', delta: 40,
+      updates: [ { v: 40, d: '2026-06-14', note: { es: 'Dos casos listos, en pausa por el curso', en: 'Two cases done, paused for the course' } } ] }
+  ];
+
+  habits = [
+    { id: 'h1', emoji: '🏋️', color: '#FF8A5B', type: 'count', target: 3, streak: 3, total: 154,
+      name: { es: 'Entrenamiento matutino', en: 'Morning workout' }, week: [3, 2, 3, 1, 3, 0, 0] },
+    { id: 'h2', emoji: '📖', color: '#6C8CF5', type: 'binary', streak: 7, total: 123,
+      name: { es: 'Leer 20 páginas', en: 'Read 20 pages' }, week: [1, 1, 1, 0, 1, 1, 0] },
+    { id: 'h3', emoji: '💧', color: '#22D3EE', type: 'count', target: 8, streak: 1, total: 107,
+      name: { es: 'Tomar 8 vasos de agua', en: 'Drink 8 glasses of water' }, week: [8, 6, 8, 8, 5, 3, 0] },
+    { id: 'h4', emoji: '👟', color: '#34D399', type: 'binary', streak: 4, total: 72,
+      name: { es: '10 mil pasos', en: '10k steps' }, week: [1, 1, 0, 1, 1, 1, 0] },
+    { id: 'h5', emoji: '🧘', color: '#A78BFA', type: 'duration', target: 15, streak: 5, total: 79,
+      name: { es: 'Meditación', en: 'Meditation' }, week: [44, 15, 0, 32, 15, 0, 0] },
+    { id: 'h6', emoji: '🎯', color: '#818CF8', type: 'duration', target: 90, streak: 2, total: 61,
+      name: { es: 'Trabajo profundo', en: 'Deep work' }, week: [117, 131, 0, 95, 141, 0, 0] },
+    { id: 'h7', emoji: '🍲', color: '#F2C94C', type: 'binary', streak: 1, total: 24, days: [5, 6],
+      name: { es: 'Preparar comidas del fin de semana', en: 'Weekend meal prep' }, week: [0, 0, 0, 0, 0, 1, 0] }
+  ];
+
+  tasks = [
+    { id: 't1', grp: 'overdue', pri: 'high', goal: 'g5', due: '11 ago', title: { es: 'Enviar la solicitud de retroalimentación 360', en: 'Send the 360 feedback request' } },
+    { id: 't2', grp: 'today', pri: 'high', goal: 'g3', title: { es: 'Transferir el ahorro de agosto', en: 'Transfer August savings' },
+      subs: [ { t: { es: 'Revisar gastos de la quincena', en: 'Review fortnight spending' }, done: true }, { t: { es: 'Programar transferencia automática', en: 'Schedule auto transfer' }, done: false } ] },
+    { id: 't3', grp: 'today', pri: 'med', goal: 'g1', title: { es: 'Leer el capítulo 4 de "Momentum"', en: 'Read chapter 4 of "Momentum"' } },
+    { id: 't4', grp: 'today', pri: 'low', rec: { es: 'cada semana', en: 'weekly' }, title: { es: 'Planear el menú de la semana', en: 'Plan the weekly menu' } },
+    { id: 't5', grp: 'tomorrow', pri: 'med', goal: 'g4', due: '14 ago', title: { es: 'Salida larga de 18 km', en: '18 km long run' } },
+    { id: 't6', grp: 'tomorrow', pri: 'low', due: '14 ago', title: { es: 'Reservar cita con el fisioterapeuta', en: 'Book the physio appointment' } },
+    { id: 't7', grp: 'week', pri: 'high', goal: 'g5', due: '17 ago', title: { es: 'Preparar la conversación de ascenso', en: 'Prepare the promotion conversation' },
+      subs: [ { t: { es: 'Listar logros del semestre', en: 'List the half-year wins' }, done: false }, { t: { es: 'Pedir ejemplos a dos compañeros', en: 'Ask two peers for examples' }, done: false } ] },
+    { id: 't8', grp: 'week', pri: 'med', goal: 'g2', due: '19 ago', title: { es: 'Terminar el módulo 8 del curso', en: 'Finish module 8 of the course' } },
+    { id: 't9', grp: 'later', pri: 'low', due: '2 sep', title: { es: 'Renovar la inscripción de la media maratón', en: 'Renew the half marathon entry' } },
+    { id: 't10', grp: 'nodate', pri: 'low', goal: 'g6', title: { es: 'Bocetar la portada del portafolio', en: 'Sketch the portfolio cover' } }
+  ];
+
+  dict = {
+    es: {
+      today: 'Hoy', goals: 'Metas', habits: 'Hábitos', tasks: 'Tareas', more: 'Más', settings: 'Ajustes',
+      greeting: 'Hola, Daniela', todayHabits: 'HÁBITOS DE HOY', todayTasks: 'TAREAS DE HOY', goalsToUpdate: 'METAS POR ACTUALIZAR',
+      allDone: '¡Día cerrado!', allDoneSub: 'Terminaste todo lo de hoy. Disfruta el resto de la tarde sin culpa.',
+      update: 'Actualizar', why: 'POR QUÉ IMPORTA', updates: 'ACTUALIZACIONES RECIENTES', status: 'ESTADO',
+      milestones: 'HITOS', next: 'SIGUIENTE', complete: 'Completar', pause: 'Pausar', logProgress: 'Registrar avance',
+      updateMs: 'Actualizar hitos', targetDate: 'Fecha meta:', todayPill: 'Hoy', save: 'Guardar', undo: 'Deshacer',
+      statusActive: 'ACTIVA', statusPaused: 'EN PAUSA', statusDone: 'COMPLETADA',
+      improving: 'Mejorando', steady: 'Estable', behind: 'Atrasado', risk: 'En riesgo',
+      newGoal: 'Nueva meta', newHabit: 'Nuevo hábito', newTask: 'Nueva tarea', logTitle: 'Registrar avance',
+      category: 'CATEGORÍA', timeframe: 'HORIZONTE', goalType: 'TIPO DE META', color: 'COLOR', habitType: 'TIPO', frequency: 'FRECUENCIA',
+      goalTitlePh: 'Título de la meta', goalDescPh: 'Descripción corta', goalWhyPh: '¿Por qué importa?',
+      targetValuePh: 'Valor objetivo', unitPh: 'Unidad', habitNamePh: 'Nombre del hábito', taskTitlePh: '¿Qué hay que hacer?',
+      notePlaceholder: 'Nota opcional', reminder: 'Recordatorio', dueDate: 'Fecha de vencimiento', linkGoal: 'Vincular a una meta', none: 'Ninguna',
+      welcomeSub: 'Metas con horizonte, hábitos con racha y un día claro. Sin fricción.',
+      signIn: 'Iniciar sesión', signUp: 'Crear cuenta', explore: 'Explorar la demo', email: 'CORREO', password: 'CONTRASEÑA',
+      nameLabel: 'NOMBRE', forgot: '¿Olvidaste tu contraseña?', google: 'Continuar con Google',
+      forgotHelp: 'Te enviamos un enlace para crear una contraseña nueva. Revisa también la carpeta de spam.',
+      resetCta: 'Enviar enlace', typeBinary: 'Binario', typeCount: 'Contable', typeDuration: 'Duración',
+      daysUnit: 'días', min: 'min'
+    },
+    en: {
+      today: 'Today', goals: 'Goals', habits: 'Habits', tasks: 'Tasks', more: 'More', settings: 'Settings',
+      greeting: 'Hi, Daniela', todayHabits: "TODAY'S HABITS", todayTasks: 'TASKS DUE TODAY', goalsToUpdate: 'GOALS TO UPDATE',
+      allDone: 'Day closed!', allDoneSub: 'You finished everything for today. Enjoy the rest of it, guilt free.',
+      update: 'Update', why: 'WHY IT MATTERS', updates: 'RECENT UPDATES', status: 'STATUS',
+      milestones: 'MILESTONES', next: 'NEXT', complete: 'Complete', pause: 'Pause', logProgress: 'Log progress',
+      updateMs: 'Update milestones', targetDate: 'Target date:', todayPill: 'Today', save: 'Save', undo: 'Undo',
+      statusActive: 'ACTIVE', statusPaused: 'PAUSED', statusDone: 'COMPLETED',
+      improving: 'Improving', steady: 'Steady', behind: 'Behind', risk: 'At risk',
+      newGoal: 'New goal', newHabit: 'New habit', newTask: 'New task', logTitle: 'Log progress',
+      category: 'CATEGORY', timeframe: 'TIMEFRAME', goalType: 'GOAL TYPE', color: 'COLOR', habitType: 'TYPE', frequency: 'FREQUENCY',
+      goalTitlePh: 'Goal title', goalDescPh: 'Short description', goalWhyPh: 'Why does it matter?',
+      targetValuePh: 'Target value', unitPh: 'Unit', habitNamePh: 'Habit name', taskTitlePh: 'What needs doing?',
+      notePlaceholder: 'Optional note', reminder: 'Reminder', dueDate: 'Due date', linkGoal: 'Link to a goal', none: 'None',
+      welcomeSub: 'Goals with a horizon, habits with a streak, and a clear day. Zero friction.',
+      signIn: 'Sign in', signUp: 'Create account', explore: 'Explore the demo', email: 'EMAIL', password: 'PASSWORD',
+      nameLabel: 'NAME', forgot: 'Forgot your password?', google: 'Continue with Google',
+      forgotHelp: "We'll send you a link to set a new password. Check your spam folder too.",
+      resetCta: 'Send link', typeBinary: 'Binary', typeCount: 'Countable', typeDuration: 'Duration',
+      daysUnit: 'days', min: 'min'
+    }
+  };
+
+  tfLabels = {
+    week: { es: 'ESTA SEMANA', en: 'THIS WEEK' }, month: { es: 'ESTE MES', en: 'THIS MONTH' },
+    quarter: { es: 'ESTE TRIMESTRE', en: 'THIS QUARTER' }, year: { es: 'ESTE AÑO', en: 'THIS YEAR' },
+    long_term: { es: 'LARGO PLAZO', en: 'LONG TERM' }
+  };
+  tfPlain = {
+    week: { es: 'Esta semana', en: 'This week' }, month: { es: 'Este mes', en: 'This month' },
+    quarter: { es: 'Este trimestre', en: 'This quarter' }, year: { es: 'Este año', en: 'This year' },
+    long_term: { es: 'Largo plazo', en: 'Long term' }
+  };
+  taskGroupLabels = {
+    overdue: { es: 'VENCIDAS', en: 'OVERDUE' }, today: { es: 'HOY', en: 'TODAY' },
+    tomorrow: { es: 'MAÑANA', en: 'TOMORROW' }, week: { es: 'ESTA SEMANA', en: 'THIS WEEK' },
+    later: { es: 'DESPUÉS', en: 'LATER' }, nodate: { es: 'SIN FECHA', en: 'NO DATE' }
+  };
+  priLabels = { high: { es: 'Alta', en: 'High' }, med: { es: 'Media', en: 'Medium' }, low: { es: 'Baja', en: 'Low' } };
+  priColors = { high: '#FF453A', med: '#F2C94C', low: '#6C8CF5' };
+
+  moreMenu = [
+    { icon: '👤', l: { es: 'Perfil', en: 'Profile' } },
+    { icon: '📊', l: { es: 'Estadísticas', en: 'Statistics' } },
+    { icon: '🏅', l: { es: 'Logros', en: 'Achievements' }, v: { es: '12 de 40', en: '12 of 40' } },
+    { icon: '🗂', l: { es: 'Categorías', en: 'Categories' }, v: { es: '6', en: '6' } },
+    { icon: '📦', l: { es: 'Archivo', en: 'Archive' }, v: { es: '8 metas', en: '8 goals' } },
+    { icon: '🔔', l: { es: 'Recordatorios', en: 'Reminders' } },
+    { icon: '☁️', l: { es: 'Datos y sincronización', en: 'Data & sync' } },
+    { icon: '⚙️', l: { es: 'Ajustes', en: 'Settings' }, go: 'settings' },
+    { icon: '❓', l: { es: 'Ayuda', en: 'Help' } },
+    { icon: 'ℹ️', l: { es: 'Acerca de', en: 'About' }, v: { es: 'v1.0.0', en: 'v1.0.0' } },
+    { icon: '🚪', l: { es: 'Cerrar sesión', en: 'Sign out' }, go: 'welcome' },
+    { icon: '🧭', l: { es: 'Ver onboarding', en: 'Replay onboarding' }, go: 'onb' }
+  ];
+
+  settingsData = [
+    { t: { es: 'CUENTA', en: 'ACCOUNT' }, rows: [
+      { i: '👤', l: { es: 'Nombre', en: 'Name' }, v: { es: 'Daniela Restrepo', en: 'Daniela Restrepo' } },
+      { i: '✉️', l: { es: 'Correo', en: 'Email' }, v: { es: 'daniela@correo.com', en: 'daniela@correo.com' } },
+      { i: '🔑', l: { es: 'Cambiar contraseña', en: 'Change password' } },
+      { i: '💻', l: { es: 'Sesiones activas', en: 'Active sessions' }, v: { es: '3 dispositivos', en: '3 devices' } },
+      { i: '🚪', l: { es: 'Cerrar sesión', en: 'Sign out' }, danger: true },
+      { i: '🗑', l: { es: 'Eliminar cuenta', en: 'Delete account' }, danger: true } ] },
+    { t: { es: 'APARIENCIA', en: 'APPEARANCE' }, rows: [
+      { i: '🌙', l: { es: 'Tema', en: 'Theme' }, v: { es: 'Oscuro', en: 'Dark' } },
+      { i: '🎨', l: { es: 'Color de acento', en: 'Accent color' }, v: { es: 'Naranja', en: 'Orange' } },
+      { i: '🔠', l: { es: 'Tamaño de texto', en: 'Text size' }, v: { es: 'Mediano', en: 'Medium' } },
+      { i: '🌀', l: { es: 'Reducir movimiento', en: 'Reduce motion' }, sw: 'motion' },
+      { i: '🫧', l: { es: 'Reducir transparencia', en: 'Reduce transparency' }, sw: 'transparency' } ] },
+    { t: { es: 'IDIOMA Y REGIÓN', en: 'LANGUAGE & REGION' }, rows: [
+      { i: '🌐', l: { es: 'Idioma', en: 'Language' }, langToggle: true },
+      { i: '📅', l: { es: 'Formato de fecha', en: 'Date format' }, v: { es: '30 jul 2026', en: 'Jul 30, 2026' } },
+      { i: '🕑', l: { es: 'Formato de hora', en: 'Time format' }, v: { es: '24 h', en: '12 h' } },
+      { i: '🗓', l: { es: 'Primer día de la semana', en: 'First day of week' }, v: { es: 'Lunes', en: 'Monday' } },
+      { i: '💱', l: { es: 'Moneda', en: 'Currency' }, v: { es: 'COP', en: 'USD' } },
+      { i: '📏', l: { es: 'Sistema de unidades', en: 'Unit system' }, v: { es: 'Métrico', en: 'Imperial' } },
+      { i: '🌎', l: { es: 'Zona horaria', en: 'Time zone' }, v: { es: 'Bogotá (GMT-5)', en: 'Bogotá (GMT-5)' } } ] },
+    { t: { es: 'NOTIFICACIONES', en: 'NOTIFICATIONS' }, rows: [
+      { i: '🔔', l: { es: 'Notificaciones', en: 'Notifications' }, sw: 'notif' },
+      { i: '⏰', l: { es: 'Recordatorios de hábitos', en: 'Habit reminders' }, v: { es: '7 configurados', en: '7 configured' } },
+      { i: '🌅', l: { es: 'Resumen diario', en: 'Daily summary' }, v: { es: '7:30', en: '7:30 AM' } },
+      { i: '📈', l: { es: 'Resumen semanal', en: 'Weekly summary' }, v: { es: 'Dom 20:00', en: 'Sun 8 PM' } },
+      { i: '🔥', l: { es: 'Alertas de racha en riesgo', en: 'Streak at risk alerts' }, sw: 'streakAlert' },
+      { i: '🎯', l: { es: 'Actualización de metas', en: 'Goal update nudges' }, v: { es: 'Semanal', en: 'Weekly' } },
+      { i: '🌘', l: { es: 'Horario de silencio', en: 'Quiet hours' }, v: { es: '22:00 – 6:30', en: '10 PM – 6:30 AM' } } ] },
+    { t: { es: 'METAS Y HÁBITOS', en: 'GOALS & HABITS' }, rows: [
+      { i: '🧭', l: { es: 'Horizonte por defecto', en: 'Default timeframe' }, v: { es: 'Este mes', en: 'This month' } },
+      { i: '📆', l: { es: 'Contar el día actual en la racha', en: 'Count today in streaks' }, sw: 'countToday' },
+      { i: '❄️', l: { es: 'Tolerancia de racha', en: 'Streak freeze' }, v: { es: '2 días al mes', en: '2 days/month' } },
+      { i: '🌜', l: { es: 'Hora de corte del día', en: 'Day cutoff hour' }, v: { es: '3:00', en: '3 AM' } },
+      { i: '👁', l: { es: 'Ocultar metas completadas', en: 'Hide completed goals' }, sw: 'hideDone' } ] },
+    { t: { es: 'DATOS', en: 'DATA' }, rows: [
+      { i: '⬇️', l: { es: 'Exportar (JSON / CSV)', en: 'Export (JSON / CSV)' } },
+      { i: '⬆️', l: { es: 'Importar', en: 'Import' } },
+      { i: '🔄', l: { es: 'Sincronización', en: 'Sync' }, sw: 'sync' },
+      { i: '🕘', l: { es: 'Última sincronización', en: 'Last sync' }, v: { es: 'hace 4 min', en: '4 min ago' } },
+      { i: '🧨', l: { es: 'Borrar todos los datos', en: 'Delete all data' }, danger: true } ] },
+    { t: { es: 'PRIVACIDAD Y SEGURIDAD', en: 'PRIVACY & SECURITY' }, rows: [
+      { i: '🔒', l: { es: 'Bloqueo con biometría o PIN', en: 'Biometric or PIN lock' }, sw: 'lock' },
+      { i: '📉', l: { es: 'Analítica anónima', en: 'Anonymous analytics' }, sw: 'analytics' } ] },
+    { t: { es: 'ACERCA DE', en: 'ABOUT' }, rows: [
+      { i: 'ℹ️', l: { es: 'Versión', en: 'Version' }, v: { es: '1.0.0 (128)', en: '1.0.0 (128)' } },
+      { i: '✨', l: { es: 'Novedades', en: "What's new" } },
+      { i: '📄', l: { es: 'Términos', en: 'Terms' } },
+      { i: '🛡', l: { es: 'Privacidad', en: 'Privacy' } },
+      { i: '💬', l: { es: 'Enviar comentarios', en: 'Send feedback' } } ] }
+  ];
+
+  switches = { motion: false, transparency: false, notif: true, streakAlert: true, countToday: true, hideDone: false, sync: true, lock: true, analytics: false };
+
+  componentDidMount() {
+    this.onResize = () => this.setState({ w: window.innerWidth });
+    window.addEventListener('resize', this.onResize);
+    this.setState({ w: window.innerWidth });
+    this.raf = setTimeout(() => this.setState({ mounted: true }), 80);
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); clearTimeout(this.raf); }
+
+  loc() { return this.state.locale || this.props.locale || 'es'; }
+  L() { return this.loc() === 'en' ? 'en-US' : 'es-CO'; }
+  tr(o) { return o ? (o[this.loc()] || o.es) : ''; }
+  num(n) { return new Intl.NumberFormat(this.L()).format(n); }
+  dateFmt(iso) {
+    const [y, m, d] = iso.split('-').map(Number);
+    return new Intl.DateTimeFormat(this.L(), { day: 'numeric', month: 'short', year: 'numeric' })
+      .format(new Date(y, m - 1, d)).replace(/\./g, '').replace(/ de /g, ' ');
+  }
+  dur(mins) {
+    if (!mins) return '';
+    const h = Math.floor(mins / 60), m = mins % 60;
+    return h ? (m ? h + 'h' + m + 'm' : h + 'h') : m + 'm';
+  }
+  reduceTrans() { return this.props.reduceTransparency ?? this.switches.transparency; }
+  mode() { const w = this.state.w; return w >= 1280 ? 'desktop' : w >= 768 ? 'tablet' : 'mobile'; }
+
+  toast(msg) {
+    clearTimeout(this.tt);
+    this.setState({ toast: msg });
+    this.tt = setTimeout(() => this.setState({ toast: null }), 3200);
+  }
+  go(s) { this.setState({ screen: s, goalId: null, flip: !this.state.flip }); }
+  goalById(id) { return this.goals.find(g => g.id === id); }
+
+  entryVal(h, i) {
+    const k = h.id + ':' + i + ':' + this.state.weekOffset;
+    return this.state.entries[k] !== undefined ? this.state.entries[k] : (this.state.weekOffset === 0 ? h.week[i] : (h.week[(i + 3) % 7]));
+  }
+  toggleCell(h, i) {
+    const k = h.id + ':' + i + ':' + this.state.weekOffset;
+    const cur = this.entryVal(h, i);
+    let next;
+    if (h.type === 'binary') next = cur ? 0 : 1;
+    else if (h.type === 'count') next = cur >= h.target ? 0 : cur + 1;
+    else next = cur ? 0 : (h.target || 20);
+    const e = Object.assign({}, this.state.entries); e[k] = next;
+    const p = Object.assign({}, this.state.popped); p[k] = (p[k] || 0) + 1;
+    this.setState({ entries: e, popped: p });
+    if (next) this.toast(this.tr(h.name) + (this.loc() === 'es' ? ' registrado' : ' logged'));
+  }
+  msDone(g, m) {
+    const k = g.id + ':' + m.id;
+    return this.state.msDone[k] !== undefined ? this.state.msDone[k] : m.done;
+  }
+  toggleMs(g, m) {
+    const k = g.id + ':' + m.id;
+    const d = Object.assign({}, this.state.msDone); d[k] = !this.msDone(g, m);
+    this.setState({ msDone: d });
+  }
+  taskDoneQ(k) { return !!this.state.taskDone[k.id]; }
+  toggleTask(k) {
+    const d = Object.assign({}, this.state.taskDone); d[k.id] = !d[k.id];
+    this.setState({ taskDone: d });
+    if (d[k.id]) this.toast(this.loc() === 'es' ? 'Tarea completada' : 'Task completed');
+  }
+  delTask(k) {
+    const g = Object.assign({}, this.state.taskGone); g[k.id] = true;
+    this.setState({ taskGone: g });
+    this.toast(this.loc() === 'es' ? 'Tarea eliminada' : 'Task deleted');
+  }
+
+  goalPct(g) {
+    if (g.type === 'milestone') {
+      const done = g.ms.filter(m => this.msDone(g, m)).length;
+      return Math.round(done / g.ms.length * 100);
+    }
+    return Math.round(g.cur / g.target * 100);
+  }
+  goalRaw(g) {
+    if (g.type === 'milestone') {
+      const done = g.ms.filter(m => this.msDone(g, m)).length;
+      return done + ' / ' + g.ms.length + ' ' + this.tr(g.unit);
+    }
+    if (g.type === 'percent') return g.cur + ' / 100 %';
+    return this.num(g.cur) + ' / ' + this.num(g.target) + ' ' + this.tr(g.unit);
+  }
+
+  heat(seed) {
+    const L = this.L();
+    const weeks = [];
+    let prevMonth = -1, lastLabel = -9;
+    const start = new Date(2026, 0, 5);
+    const todayIdx = 220;
+    let s = seed * 9301;
+    const rnd = () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+    for (let w = 0; w < 33; w++) {
+      const first = new Date(start.getTime() + w * 7 * 86400000);
+      const mo = first.getMonth();
+      const showLabel = (w === 0 || mo !== prevMonth) && (w - lastLabel) >= 3;
+      if (mo !== prevMonth) prevMonth = mo;
+      if (showLabel) lastLabel = w;
+      const days = [];
+      for (let dd = 0; dd < 7; dd++) {
+        const idx = w * 7 + dd;
+        const future = idx > todayIdx;
+        const r = rnd();
+        const lvl = future ? -1 : (r < 0.28 ? 0 : r < 0.5 ? 1 : r < 0.72 ? 2 : r < 0.9 ? 3 : 4);
+        days.push({ lvl: lvl, future: future });
+      }
+      weeks.push({ month: showLabel ? new Intl.DateTimeFormat(L, { month: 'short' }).format(first).replace('.', '') : '', days: days });
+    }
+    return weeks;
+  }
+
+  weekRangeLabel() {
+    const off = this.state.weekOffset;
+    const mon = new Date(2026, 6, 27 + off * 7);
+    const sun = new Date(mon.getTime() + 6 * 86400000);
+    const L = this.L();
+    const f = new Intl.DateTimeFormat(L, { day: 'numeric', month: 'short' });
+    const c = (dt) => f.format(dt).replace(/\./g, '').replace(/ de /g, ' ');
+    return c(mon) + ' - ' + c(sun) + ', ' + sun.getFullYear();
+  }
+
+  renderVals() {
+    const st = this.state, t = this.dict[this.loc()], mode = this.mode();
+    const isMobile = mode === 'mobile', isDesktop = mode === 'desktop', isTablet = mode === 'tablet';
+    const blur = this.reduceTrans() ? 'blur(6px)' : 'blur(22px)';
+    const rootVars = { position: 'relative', minHeight: '100vh', '--gb': blur,
+      '--g1': this.reduceTrans() ? 'rgba(22,30,74,0.86)' : 'rgba(255,255,255,0.06)',
+      '--g2': this.reduceTrans() ? 'rgba(30,40,92,0.92)' : 'rgba(255,255,255,0.10)',
+      '--g3': this.reduceTrans() ? 'rgba(42,54,112,0.96)' : 'rgba(255,255,255,0.16)' };
+
+    const screen = st.screen;
+    const authScreens = ['welcome', 'login', 'signup', 'forgot', 'onb'];
+    const isAuth = authScreens.indexOf(screen) >= 0;
+    const detailGoal = st.goalId ? this.goalById(st.goalId) : null;
+    const dcolor = detailGoal ? this.cats[detailGoal.cat].color : 'transparent';
+
+    // ---------- nav ----------
+    const navKeys = [
+      { k: 'today', label: t.today, badge: 6 }, { k: 'goals', label: t.goals },
+      { k: 'habits', label: t.habits }, { k: 'tasks', label: t.tasks }, { k: 'more', label: t.more }
+    ];
+    const activeKey = screen === 'settings' ? 'more' : screen;
+    const activeIdx = Math.max(0, navKeys.findIndex(n => n.k === activeKey));
+    const navItems = navKeys.map((n, i) => {
+      const active = n.k === activeKey;
+      const base = { position: 'relative', display: 'flex', alignItems: 'center', borderRadius: isDesktop ? '14px' : '16px',
+        color: active ? '#fff' : 'var(--t3)', transition: 'color .18s cubic-bezier(.2,0,0,1),transform .1s', background: 'transparent', zIndex: 1 };
+      const st2 = isDesktop
+        ? Object.assign(base, { gap: '12px', height: '46px', padding: '0 14px', fontSize: '15px', fontWeight: 600, justifyContent: 'flex-start', width: '100%', flex: 'none' })
+        : isTablet ? Object.assign(base, { flexDirection: 'column', height: '46px', padding: 0, width: '100%', justifyContent: 'center', flex: 'none' })
+        : Object.assign(base, { flexDirection: 'column', gap: '3px', flex: 1, padding: '8px 0' });
+      return { key: n.k, label: n.label, st: st2,
+        iconSt: { position: 'relative', display: 'grid', placeItems: 'center' },
+        labelSt: { fontSize: isDesktop ? '15px' : '10px', fontWeight: isDesktop ? 600 : 600, letterSpacing: isDesktop ? 'normal' : '.02em', display: isTablet ? 'none' : 'block' },
+        isToday: n.k === 'today', isGoals: n.k === 'goals', isHabits: n.k === 'habits', isTasks: n.k === 'tasks', isMore: n.k === 'more',
+        hasBadge: !!n.badge, badge: n.badge, tap: () => this.go(n.k) };
+    });
+    const navStyle = isDesktop
+      ? { position: 'fixed', left: 0, top: 0, bottom: 0, width: '240px', padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '6px',
+          background: 'var(--g1)', borderRight: '1px solid var(--gbd)', backdropFilter: 'var(--gb)', zIndex: 20 }
+      : isTablet
+      ? { position: 'fixed', left: '10px', top: '50%', transform: 'translateY(-50%)', width: '74px', padding: '10px 8px', display: 'flex', flexDirection: 'column', gap: '4px',
+          background: 'var(--g1)', border: '1px solid var(--gbd)', borderRadius: '24px', backdropFilter: 'var(--gb)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,.08)', zIndex: 20 }
+      : { position: 'fixed', left: '12px', right: '12px', bottom: 'calc(8px + env(safe-area-inset-bottom))', display: 'flex', padding: '4px',
+          background: this.reduceTrans() ? 'rgba(19,26,70,0.97)' : 'rgba(9,13,42,0.42)',
+          border: '1px solid rgba(255,255,255,0.10)', borderRadius: '26px',
+          backdropFilter: this.reduceTrans() ? 'none' : 'blur(18px)',
+          WebkitBackdropFilter: this.reduceTrans() ? 'none' : 'blur(18px)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,.10), 0 12px 40px rgba(4,7,26,.55)', zIndex: 30 };
+    const navPillStyle = isDesktop
+      ? { position: 'absolute', left: '10px', right: '10px', top: (24 + activeIdx * 52) + 'px', height: '46px', borderRadius: '14px',
+          background: 'var(--g2)', border: '1px solid var(--gbd)', transition: 'top .32s cubic-bezier(.2,0,0,1)' }
+      : isTablet
+      ? { position: 'absolute', left: '8px', right: '8px', top: (10 + activeIdx * 50) + 'px', height: '46px', borderRadius: '16px',
+          background: 'var(--g2)', border: '1px solid var(--gbd)', transition: 'top .32s cubic-bezier(.2,0,0,1)' }
+      : { position: 'absolute', top: '4px', bottom: '4px', left: 'calc(4px + ' + activeIdx + ' * ((100% - 8px) / 5))', width: 'calc((100% - 8px) / 5)',
+          borderRadius: '22px', background: 'rgba(255,255,255,0.09)', border: '1px solid rgba(255,255,255,0.14)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,.10)', transition: 'left .32s cubic-bezier(.2,0,0,1)' };
+
+    // ---------- layout ----------
+    const showDetailPanel = isDesktop && !!detailGoal;
+    const shellStyle = { position: 'relative', zIndex: 2, minHeight: '100vh',
+      paddingLeft: isDesktop ? '240px' : isTablet ? '94px' : '0' };
+    const mainStyle = { maxWidth: isDesktop ? (showDetailPanel ? '760px' : '1000px') : '100%',
+      margin: isDesktop ? '0' : '0 auto', padding: isMobile ? '14px 16px 110px' : '24px 24px 48px',
+      marginLeft: isDesktop ? 'auto' : undefined, marginRight: isDesktop ? (showDetailPanel ? '440px' : 'auto') : undefined,
+      transition: 'margin .3s cubic-bezier(.2,0,0,1)' };
+    const screenStyle = { display: 'flex', flexDirection: 'column', gap: '14px',
+      animation: (st.flip ? 'msInB' : 'msInA') + ' .25s cubic-bezier(.2,0,0,1) both' };
+    const gridStyle = { display: 'grid', gap: '12px', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fill,minmax(320px,1fr))' };
+
+    const tintStyle = detailGoal
+      ? { position: 'fixed', inset: 0, background: 'linear-gradient(180deg,' + dcolor + ' -10%,transparent 45%)', opacity: .35, zIndex: 1, pointerEvents: 'none', transition: 'opacity .3s' }
+      : { position: 'fixed', inset: 0, opacity: 0, zIndex: 1, pointerEvents: 'none' };
+
+    // ---------- goals ----------
+    const mkGoal = (g) => {
+      const c = this.cats[g.cat], pct = this.goalPct(g);
+      const status = g.status === 'paused' ? { l: '⏸ ' + t.statusPaused, c: '#F2C94C' } :
+        g.status === 'active-up' ? { l: '↗ ' + t.statusActive, c: '#34D399' } :
+        g.status === 'completed' ? { l: '✓ ' + t.statusDone, c: '#34D399' } : { l: t.statusActive, c: 'rgba(255,255,255,.66)' };
+      const pending = g.ms ? g.ms.filter(m => !this.msDone(g, m)) : [];
+      return {
+        id: g.id, emoji: c.emoji, title: this.tr(g.title), desc: this.tr(g.desc),
+        statusLabel: status.l, rawLabel: this.goalRaw(g), pctLabel: pct + '%',
+        catName: this.tr({ es: c.es, en: c.en }), left: this.tr(g.left),
+        hasNext: pending.length > 0, nextMs: pending.length ? this.tr(pending[0].t) : '',
+        staleNote: this.loc() === 'es' ? 'Sin actualizar hace 9 días' : 'Not updated in 9 days',
+        cardSt: { display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', borderRadius: '20px',
+          background: 'var(--g1)', border: '1px solid var(--gbd)', backdropFilter: 'var(--gb)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)',
+          cursor: 'pointer', transition: 'transform .18s cubic-bezier(.2,0,0,1),background .18s cubic-bezier(.2,0,0,1)',
+          outline: st.goalId === g.id && isDesktop ? '1.5px solid ' + c.color : 'none' },
+        iconSt: { width: '44px', height: '44px', borderRadius: '14px', background: 'var(--g2)', border: '1px solid var(--gbd)',
+          display: 'grid', placeItems: 'center', fontSize: '21px', flex: 'none' },
+        statusSt: { fontSize: '10px', fontWeight: 700, letterSpacing: '.09em', color: status.c, whiteSpace: 'nowrap', flex: 'none', paddingTop: '4px' },
+        pctSt: { fontSize: '13px', fontWeight: 700, color: c.color, fontVariantNumeric: 'tabular-nums' },
+        barSt: { height: '100%', width: (st.mounted ? pct : 0) + '%', borderRadius: '999px', background: c.color,
+          boxShadow: '0 0 10px ' + c.color + '66', transition: 'width .7s cubic-bezier(.2,0,0,1)' },
+        catSt: { fontSize: '13px', fontWeight: 600, color: c.color },
+        open: () => this.setState({ goalId: g.id, screen: isDesktop ? 'goals' : 'goal', flip: !st.flip }),
+        log: (e) => { if (e) e.stopPropagation(); this.setState({ sheet: 'log', sheetGoal: g.id, logVal: '' }); }
+      };
+    };
+    const order = ['week', 'month', 'quarter', 'year', 'long_term'];
+    const goalGroups = order.map(tf => {
+      const gs = this.goals.filter(g => g.tf === tf);
+      return { label: this.tr(this.tfLabels[tf]), count: gs.length, goals: gs.map(mkGoal) };
+    }).filter(g => g.count > 0);
+
+    // ---------- goal detail ----------
+    let d = null;
+    if (detailGoal) {
+      const g = detailGoal, c = this.cats[g.cat], pct = this.goalPct(g);
+      const light = ['#F2C94C', '#34D399', '#A78BFA', '#FF8A5B', '#F472B6'].indexOf(c.color) >= 0;
+      const msDoneCount = g.ms ? g.ms.filter(m => this.msDone(g, m)).length : 0;
+      const pend = g.ms ? g.ms.filter(m => !this.msDone(g, m)) : [];
+      const done = g.ms ? g.ms.filter(m => this.msDone(g, m)) : [];
+      const ordered = pend.concat(done);
+      d = {
+        title: this.tr(g.title), timeframe: this.tr(this.tfPlain[g.tf]), why: this.tr(g.why),
+        chipLabel: c.emoji + '  ' + this.tr({ es: c.es, en: c.en }),
+        chipSt: { display: 'inline-flex', alignItems: 'center', gap: '2px', padding: '7px 14px', borderRadius: '999px',
+          background: c.color + '2E', border: '1px solid ' + c.color + '55', color: c.color, fontSize: '14px', fontWeight: 600 },
+        big: g.type === 'milestone' ? String(msDoneCount) : (g.type === 'percent' ? g.cur + '%' : this.num(g.cur) + ' ' + this.tr(g.unit)),
+        small: g.type === 'milestone' ? (this.loc() === 'es' ? 'de ' : 'of ') + g.ms.length
+          : g.type === 'percent' ? (this.loc() === 'es' ? 'de 100%' : 'of 100%')
+          : (this.loc() === 'es' ? 'de ' : 'of ') + this.num(g.target) + ' ' + this.tr(g.unit),
+        pct: pct + '%',
+        pctSt: { padding: '6px 12px', borderRadius: '999px', background: c.color + '33', color: c.color, fontSize: '15px', fontWeight: 700, fontVariantNumeric: 'tabular-nums', flex: 'none' },
+        delta: (g.type === 'milestone' ? '+' + msDoneCount + ' ' + this.tr(g.unit) : g.type === 'percent' ? '+' + g.cur + '%' : '+' + this.num(g.delta) + ' ' + this.tr(g.unit)),
+        left: this.tr(g.left), trend: t[g.trend],
+        trendSt: { color: g.trend === 'improving' ? '#34D399' : g.trend === 'steady' ? 'rgba(255,255,255,.66)' : '#F2C94C', fontWeight: 600 },
+        barSt: { height: '100%', width: (st.mounted ? pct : 0) + '%', borderRadius: '999px', background: c.color, boxShadow: '0 0 12px ' + c.color + '77', transition: 'width .7s cubic-bezier(.2,0,0,1)' },
+        knobSt: { position: 'absolute', left: 'calc(' + (st.mounted ? pct : 0) + '% - 7px)', width: '14px', height: '14px', borderRadius: '999px',
+          background: '#fff', border: '1px solid rgba(0,0,0,.06)', transition: 'left .7s cubic-bezier(.2,0,0,1)' },
+        targetDate: t.targetDate + ' ' + this.dateFmt(g.td),
+        ctaLabel: g.type === 'milestone' ? t.updateMs : t.logProgress,
+        ctaSt: { height: '54px', borderRadius: '16px', background: c.color, color: light ? '#1A1A1A' : '#fff', fontSize: '16px', fontWeight: 700,
+          transition: 'transform .18s cubic-bezier(.2,0,0,1),filter .18s' },
+        cta: () => this.setState({ sheet: g.type === 'milestone' ? 'goal' : 'log', sheetGoal: g.id, logVal: '' }),
+        isMilestone: g.type === 'milestone', msLabel: t.milestones + ' (' + msDoneCount + '/' + (g.ms ? g.ms.length : 0) + ')',
+        milestones: ordered.map((m, i) => {
+          const isDone = this.msDone(g, m), isNext = !isDone && i === 0;
+          const k = g.id + ':' + m.id;
+          return {
+            title: this.tr(m.t), isNext: isNext,
+            st: { position: 'relative', display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 16px', borderRadius: '16px',
+              background: isNext ? 'var(--g2)' : 'var(--g1)', border: '1px solid ' + (isNext ? 'var(--gbd)' : 'transparent'),
+              backdropFilter: 'var(--gb)', textAlign: 'left', width: '100%', transition: 'background .18s' },
+            lineSt: { position: 'absolute', left: '27px', top: i === 0 ? '50%' : 0, bottom: i === ordered.length - 1 ? '50%' : 0,
+              width: '2px', background: isDone ? c.color + '99' : 'rgba(255,255,255,.14)', transition: 'background .5s' },
+            dotSt: { position: 'relative', width: '22px', height: '22px', borderRadius: '999px', flex: 'none', display: 'grid', placeItems: 'center',
+              background: isDone ? c.color : 'transparent', border: isDone ? '1px solid ' + c.color : '1.6px solid rgba(255,255,255,.38)',
+              animation: st.msDone[k] !== undefined ? 'msPop .35s cubic-bezier(.2,0,0,1)' : 'none' },
+            tickSt: { fontSize: '12px', fontWeight: 800, color: '#0B1038', opacity: isDone ? 1 : 0, transition: 'opacity .2s' },
+            titleSt: { flex: 1, minWidth: 0, fontSize: '15px', fontWeight: isNext ? 600 : 500, color: isDone ? 'var(--t2)' : 'var(--t1)', textWrap: 'pretty' },
+            tap: () => this.toggleMs(g, m)
+          };
+        }),
+        hasUpdates: !!(g.updates && g.updates.length),
+        updates: (g.updates || []).map((u, i) => ({
+          value: g.type === 'percent' ? u.v + '%' : this.num(u.v) + ' ' + this.tr(g.unit),
+          note: this.tr(u.note), date: this.dateFmt(u.d),
+          st: { display: 'flex', alignItems: 'flex-start', gap: '12px', padding: '14px 16px',
+            borderTop: i === 0 ? 'none' : '1px solid rgba(255,255,255,.07)' }
+        })),
+        markDone: () => this.toast(this.loc() === 'es' ? 'Meta marcada como completada' : 'Goal marked completed'),
+        markPaused: () => this.toast(this.loc() === 'es' ? 'Meta en pausa' : 'Goal paused')
+      };
+    }
+    const detailOpenMobile = !isDesktop && screen === 'goal' && !!detailGoal;
+    const detailWrapStyle = isDesktop
+      ? { position: 'fixed', top: 0, right: 0, bottom: 0, width: '440px', borderLeft: '1px solid var(--gbd)',
+          background: 'var(--g1)', backdropFilter: 'var(--gb)', overflowY: 'auto', overflowX: 'hidden', zIndex: 15,
+          transform: detailGoal ? 'none' : 'translateX(100%)', transition: 'transform .3s cubic-bezier(.2,0,0,1)' }
+      : { position: 'fixed', inset: 0, overflowY: 'auto', overflowX: 'hidden', zIndex: 25, background: 'linear-gradient(180deg,var(--bg-top),var(--bg-mid) 52%,var(--bg-bottom))',
+          transform: detailOpenMobile ? 'none' : 'translateX(100%)', transition: 'transform .25s cubic-bezier(.2,0,0,1)',
+          pointerEvents: detailOpenMobile ? 'auto' : 'none' };
+    const detailTintStyle = { position: 'absolute', left: 0, right: 0, top: 0, height: '55%',
+      background: 'linear-gradient(180deg,' + dcolor + ' -10%,transparent 45%)', opacity: .35, pointerEvents: 'none' };
+    const detailInnerStyle = { position: 'relative', display: 'flex', flexDirection: 'column', gap: '14px',
+      padding: isMobile ? '18px 16px 120px' : '22px 20px 40px', maxWidth: '520px', margin: '0 auto' };
+
+    // ---------- habits ----------
+    const dayNames = this.loc() === 'es' ? ['LU', 'MA', 'MI', 'JU', 'VI', 'SA', 'DO'] : ['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU'];
+    const typeLabel = (h) => h.type === 'binary' ? t.typeBinary : h.type === 'count' ? t.typeCount + ' · ' + h.target : t.typeDuration + ' · ' + h.target + ' ' + t.min;
+    const mkHabit = (h) => ({
+      emoji: h.emoji, name: this.tr(h.name), streak: h.streak, typeLabel: typeLabel(h),
+      totalLabel: h.total + ' ' + t.daysUnit,
+      iconSt: { width: '40px', height: '40px', borderRadius: '13px', background: h.color + '26', border: '1px solid ' + h.color + '44',
+        display: 'grid', placeItems: 'center', fontSize: '19px', flex: 'none' },
+      streakSt: { display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '5px 11px', borderRadius: '999px',
+        background: 'var(--g2)', border: '1px solid var(--gbd)', fontSize: '13px', fontWeight: 700, fontVariantNumeric: 'tabular-nums', flex: 'none' },
+      fireSt: { fontSize: '12px', display: 'inline-block', animation: 'none' },
+      cells: dayNames.map((dn, i) => {
+        const enabled = !h.days || h.days.indexOf(i) >= 0;
+        const v = enabled ? this.entryVal(h, i) : 0;
+        const complete = h.type === 'count' ? v >= h.target : h.type === 'duration' ? v >= h.target : !!v;
+        const partial = !complete && v > 0;
+        const k = h.id + ':' + i + ':' + st.weekOffset;
+        let content = '';
+        if (h.type === 'binary') content = complete ? '✓' : '';
+        else if (h.type === 'count') content = v ? String(v) : '';
+        else content = v ? this.dur(v) : '';
+        return {
+          day: dn, content: content,
+          dayLabelSt: { fontSize: '10px', fontWeight: 600, letterSpacing: '.06em', color: enabled ? 'var(--t3)' : 'rgba(255,255,255,.16)' },
+          st: { width: '100%', maxWidth: '54px', margin: '0 auto', aspectRatio: '1', borderRadius: '10px', display: 'grid', placeItems: 'center',
+            background: complete ? h.color : partial ? h.color + '3D' : 'transparent',
+            border: enabled ? (complete ? '1px solid ' + h.color : '1px solid rgba(255,255,255,.16)') : '1px solid transparent',
+            opacity: enabled ? 1 : .25, color: complete ? '#0B1038' : 'var(--t2)',
+            fontSize: h.type === 'duration' ? '10px' : '13px', fontWeight: 700, fontVariantNumeric: 'tabular-nums',
+            cursor: enabled ? 'pointer' : 'not-allowed', transition: 'background .2s cubic-bezier(.2,0,0,1),transform .12s',
+            animation: st.popped[k] ? 'msPop .34s cubic-bezier(.2,0,0,1)' : 'none' },
+          tap: () => { if (enabled) this.toggleCell(h, i); }
+        };
+      })
+    });
+    const weekHabits = this.habits.map(mkHabit);
+    const yearHabits = this.habits.slice(0, 5).map((h, i) => {
+      const base = mkHabit(h);
+      const lvlBg = (lvl) => lvl < 0 ? 'rgba(255,255,255,0.055)' : lvl === 0 ? 'rgba(255,255,255,0.11)'
+        : h.color + (lvl === 1 ? '59' : lvl === 2 ? '8C' : lvl === 3 ? 'C4' : 'FF');
+      return Object.assign(base, {
+        quickLabel: h.type === 'count' ? String(h.target) : h.type === 'binary' ? '✓' : '+',
+        quickSt: { width: '34px', height: '34px', borderRadius: '999px', flex: 'none', display: 'grid', placeItems: 'center',
+          background: h.type === 'count' ? 'rgba(255,69,58,.85)' : h.color + '2E', border: '1px solid ' + (h.type === 'count' ? 'rgba(255,69,58,.5)' : h.color + '55'),
+          color: h.type === 'count' ? '#fff' : h.color, fontSize: '14px', fontWeight: 700, transition: 'filter .18s' },
+        quick: () => this.toggleCell(h, 3),
+        weeks: this.heat(i + 2).map(w => ({
+          month: w.month,
+          labelSt: { flex: '1 1 0', minWidth: 0, fontSize: '9px', fontWeight: 600, letterSpacing: '.04em', color: 'var(--t3)', whiteSpace: 'nowrap', overflow: 'visible', textTransform: 'capitalize' },
+          days: w.days.map(c => ({ st: { display: 'block', width: '100%', aspectRatio: '1', borderRadius: '3px', background: lvlBg(c.lvl) } }))
+        }))
+      });
+    });
+
+    // ---------- today ----------
+    const todayHabits = this.habits.slice(0, 5).map(h => {
+      const v = this.entryVal(h, 3);
+      const complete = h.type === 'count' ? v >= h.target : h.type === 'duration' ? v >= h.target : !!v;
+      return { emoji: h.emoji, name: this.tr(h.name),
+        st: { display: 'flex', alignItems: 'center', gap: '9px', padding: '10px 14px 10px 10px', borderRadius: '999px', flex: 'none',
+          background: complete ? h.color + '2E' : 'var(--g1)', border: '1px solid ' + (complete ? h.color + '55' : 'var(--gbd)'),
+          backdropFilter: 'var(--gb)', transition: 'background .2s,transform .12s' },
+        dotSt: { width: '30px', height: '30px', borderRadius: '999px', background: h.color + '26', display: 'grid', placeItems: 'center', fontSize: '15px' },
+        checkSt: { width: '18px', height: '18px', borderRadius: '999px', display: 'grid', placeItems: 'center', fontSize: '10px', fontWeight: 800,
+          background: complete ? h.color : 'transparent', border: complete ? 'none' : '1.4px solid rgba(255,255,255,.3)',
+          color: '#0B1038', opacity: complete ? 1 : .55 },
+        tap: () => this.toggleCell(h, 3) };
+    });
+    const mkTask = (k) => {
+      const donev = this.taskDoneQ(k), goal = k.goal ? this.goalById(k.goal) : null;
+      const gc = goal ? this.cats[goal.cat] : null;
+      const subs = k.subs || [];
+      return {
+        id: k.id, title: this.tr(k.title), pri: this.priLabels[k.pri] ? this.tr(this.priLabels[k.pri]) : '',
+        hasGoal: !!goal, goalName: goal ? this.tr(goal.title) : '', hasDue: !!k.due, due: k.due || '',
+        hasRec: !!k.rec, rec: k.rec ? this.tr(k.rec) : '',
+        boxSt: { width: '24px', height: '24px', borderRadius: '999px', flex: 'none', display: 'grid', placeItems: 'center', marginTop: '1px',
+          background: donev ? '#34D399' : 'transparent', border: donev ? '1px solid #34D399' : '1.6px solid rgba(255,255,255,.32)',
+          transition: 'background .2s,transform .12s', animation: donev ? 'msPop .32s cubic-bezier(.2,0,0,1)' : 'none' },
+        tickSt: { fontSize: '12px', fontWeight: 800, color: '#0B1038', opacity: donev ? 1 : 0, transition: 'opacity .18s' },
+        titleSt: { fontSize: '16px', fontWeight: 600, textWrap: 'pretty', color: donev ? 'var(--t3)' : 'var(--t1)', textDecoration: donev ? 'line-through' : 'none' },
+        priSt: { padding: '3px 9px', borderRadius: '999px', fontSize: '11px', fontWeight: 700, letterSpacing: '.04em',
+          background: this.priColors[k.pri] + '26', border: '1px solid ' + this.priColors[k.pri] + '4D', color: this.priColors[k.pri] },
+        goalSt: { display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '3px 10px', borderRadius: '999px', maxWidth: '190px',
+          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+          background: gc ? gc.color + '1F' : 'transparent', border: '1px solid ' + (gc ? gc.color + '44' : 'transparent'),
+          color: gc ? gc.color : 'inherit', fontSize: '12px', fontWeight: 600 },
+        hasSubs: subs.length > 0, subsOpen: !!st.subsOpen[k.id],
+        subsLabel: subs.length + (this.loc() === 'es' ? ' subtareas' : ' subtasks'),
+        chevSt: { display: 'inline-block', transform: st.subsOpen[k.id] ? 'rotate(90deg)' : 'none', transition: 'transform .2s' },
+        subs: subs.map(s => ({ title: this.tr(s.t),
+          boxSt: { width: '16px', height: '16px', borderRadius: '999px', flex: 'none',
+            background: s.done ? '#34D399' : 'transparent', border: s.done ? 'none' : '1.4px solid rgba(255,255,255,.28)' },
+          titleSt: { fontSize: '14px', color: s.done ? 'var(--t3)' : 'var(--t2)', textDecoration: s.done ? 'line-through' : 'none' } })),
+        toggleSubs: () => { const o = Object.assign({}, st.subsOpen); o[k.id] = !o[k.id]; this.setState({ subsOpen: o }); },
+        tap: () => this.toggleTask(k), del: () => this.delTask(k)
+      };
+    };
+    const liveTasks = this.tasks.filter(k => !st.taskGone[k.id]);
+    const todayTaskData = liveTasks.filter(k => k.grp === 'today');
+    const remaining = todayTaskData.filter(k => !this.taskDoneQ(k)).length + todayHabits.filter(h => h.checkSt.opacity !== 1).length;
+    const dayTotal = todayTaskData.length + todayHabits.length;
+    const dayDone = dayTotal - remaining;
+    const dayPctN = dayTotal ? Math.round(dayDone / dayTotal * 100) : 0;
+    const taskGroups = ['overdue', 'today', 'tomorrow', 'week', 'later', 'nodate'].map(gk => {
+      const ks = liveTasks.filter(k => k.grp === gk);
+      return { label: this.tr(this.taskGroupLabels[gk]), count: ks.length, tasks: ks.map(mkTask),
+        labelSt: { fontSize: '11px', fontWeight: 600, letterSpacing: '.09em', color: gk === 'overdue' ? '#FF453A' : 'var(--t3)' },
+        empty: ks.length === 0,
+        emptyCopy: this.loc() === 'es' ? 'Nada por acá todavía. Suma algo que quieras sacar del camino.' : 'Nothing here yet. Add something you want off your plate.',
+        emptyCta: this.loc() === 'es' ? 'Añadir tarea' : 'Add task' };
+    });
+
+    // ---------- settings ----------
+    const settingsGroups = this.settingsData.map(sg => ({
+      title: this.tr(sg.t),
+      rows: sg.rows.map((r, i) => {
+        const on = r.sw ? (r.sw === 'transparency' ? this.reduceTrans() : this.switches[r.sw]) : false;
+        return {
+          icon: r.i, label: this.tr(r.l),
+          hasValue: !!r.v || !!r.langToggle, value: r.langToggle ? (this.loc() === 'es' ? 'Español' : 'English') : (r.v ? this.tr(r.v) : ''),
+          isSwitch: !!r.sw, hasChevron: !r.sw,
+          st: { display: 'flex', alignItems: 'center', gap: '12px', width: '100%', padding: '13px 16px', textAlign: 'left',
+            background: 'transparent', borderTop: i === 0 ? 'none' : '1px solid rgba(255,255,255,.07)', transition: 'background .15s' },
+          labelSt: { flex: 1, minWidth: 0, fontSize: '15px', fontWeight: 500, color: r.danger ? '#FF453A' : 'var(--t1)', textWrap: 'pretty' },
+          switchSt: { position: 'relative', width: '46px', height: '28px', borderRadius: '999px', flex: 'none',
+            background: on ? 'rgba(52,211,153,.75)' : 'rgba(255,255,255,.16)', transition: 'background .2s' },
+          knobSt: { position: 'absolute', top: '3px', left: on ? '21px' : '3px', width: '22px', height: '22px', borderRadius: '999px',
+            background: '#fff', transition: 'left .2s cubic-bezier(.2,0,0,1)' },
+          tap: () => {
+            if (r.langToggle) { this.setState({ locale: this.loc() === 'es' ? 'en' : 'es' }); return; }
+            if (r.sw) { this.switches[r.sw] = !this.switches[r.sw]; this.forceUpdate(); return; }
+            if (r.danger) this.toast(this.loc() === 'es' ? 'Acción sensible: pediríamos confirmación' : 'Sensitive action: we would ask to confirm');
+          }
+        };
+      })
+    }));
+
+    // ---------- sheets ----------
+    const sheetOpen = !!st.sheet;
+    const sheetGoal = st.sheetGoal ? this.goalById(st.sheetGoal) : null;
+    const sheetTitle = st.sheet === 'log' ? t.logTitle : st.sheet === 'goal' ? t.newGoal : st.sheet === 'habit' ? t.newHabit : st.sheet === 'task' ? t.newTask : '';
+    const sheetStyle = isMobile
+      ? { position: 'fixed', left: 0, right: 0, bottom: 0, maxHeight: '88vh', overflowY: 'auto', zIndex: 60,
+          padding: '12px 16px calc(28px + env(safe-area-inset-bottom))', borderRadius: '28px 28px 0 0',
+          background: 'rgba(20,28,79,0.82)', border: '1px solid var(--gbd)', backdropFilter: sheetOpen ? 'blur(30px)' : 'none',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,.10)',
+          transform: sheetOpen ? 'none' : 'translateY(101%)', transition: 'transform .3s cubic-bezier(.2,0,0,1)' }
+      : { position: 'fixed', left: '50%', top: '50%', width: 'min(520px,92vw)', maxHeight: '86vh', overflowY: 'auto', zIndex: 60,
+          padding: '16px 20px 24px', borderRadius: '24px', background: 'rgba(20,28,79,0.86)', border: '1px solid var(--gbd)',
+          backdropFilter: sheetOpen ? 'blur(30px)' : 'none', boxShadow: 'inset 0 1px 0 rgba(255,255,255,.10)',
+          transform: sheetOpen ? 'translate(-50%,-50%) scale(1)' : 'translate(-50%,-46%) scale(.96)',
+          opacity: sheetOpen ? 1 : 0, pointerEvents: sheetOpen ? 'auto' : 'none', transition: 'transform .26s cubic-bezier(.2,0,0,1),opacity .26s' };
+    const sheetScrimStyle = { position: 'fixed', inset: 0, background: 'rgba(6,10,32,.55)',
+      backdropFilter: sheetOpen ? 'blur(2px)' : 'none', zIndex: 55,
+      opacity: sheetOpen ? 1 : 0, pointerEvents: sheetOpen ? 'auto' : 'none', transition: 'opacity .26s' };
+    const chip = (active, color) => ({ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+      padding: '10px 14px', borderRadius: '999px', fontSize: '14px', fontWeight: 600,
+      background: active ? (color || '#FF8A3D') + '2E' : 'var(--g2)', border: '1px solid ' + (active ? (color || '#FF8A3D') + '77' : 'var(--gbd)'),
+      color: active ? (color || '#FF8A3D') : 'var(--t2)', transition: 'background .16s,color .16s' });
+    const setSel = (k, v) => { const s = Object.assign({}, st.sel); s[k] = v; this.setState({ sel: s }); };
+    const catChips = Object.keys(this.cats).map(k => {
+      const c = this.cats[k], active = st.sel.cat === k;
+      return { emoji: c.emoji, name: this.tr({ es: c.es, en: c.en }),
+        st: Object.assign(chip(active, c.color), { flexDirection: 'column', gap: '4px', borderRadius: '16px', padding: '12px 8px' }),
+        tap: () => setSel('cat', k) };
+    });
+    const tfChips = order.map(k => ({ label: this.tr(this.tfPlain[k]), st: chip(st.sel.tf === k), tap: () => setSel('tf', k) }));
+    const typeNames = { numeric: { es: 'Numérica', en: 'Numeric' }, percent: { es: 'Porcentaje', en: 'Percent' }, milestone: { es: 'Hitos', en: 'Milestones' }, binary: { es: 'Binaria', en: 'Binary' } };
+    const typeChips = Object.keys(typeNames).map(k => ({ label: this.tr(typeNames[k]), st: chip(st.sel.type === k), tap: () => setSel('type', k) }));
+    const habitTypeChips = [['binary', t.typeBinary], ['count', t.typeCount], ['duration', t.typeDuration]].map(p =>
+      ({ label: p[1], st: chip(st.sel.htype === p[0], '#7C5CFF'), tap: () => setSel('htype', p[0]) }));
+    const freqNames = { daily: { es: 'Diaria', en: 'Daily' }, weekly_n: { es: 'X veces por semana', en: 'X times a week' }, specific: { es: 'Días específicos', en: 'Specific days' } };
+    const freqChips = Object.keys(freqNames).map(k => ({ label: this.tr(freqNames[k]), st: chip(st.sel.freq === k, '#7C5CFF'), tap: () => setSel('freq', k) }));
+    const dayToggles = dayNames.map((dn, i) => {
+      const active = !!st.sel.days[i];
+      return { label: dn, st: { flex: 1, height: '40px', borderRadius: '12px', fontSize: '12px', fontWeight: 700,
+        background: active ? 'rgba(124,92,255,.35)' : 'var(--g2)', border: '1px solid ' + (active ? 'rgba(124,92,255,.7)' : 'var(--gbd)'),
+        color: active ? '#fff' : 'var(--t3)', transition: 'background .16s' },
+        tap: () => { const d = Object.assign({}, st.sel.days); d[i] = !d[i]; setSel('days', d); } };
+    });
+    const colorChips = ['#FF8A5B', '#6C8CF5', '#22D3EE', '#34D399', '#A78BFA', '#818CF8', '#F2C94C'].map(c => ({
+      st: { width: '38px', height: '38px', borderRadius: '999px', background: c,
+        outline: st.sel.color === c ? '2px solid #fff' : 'none', outlineOffset: '2px', transition: 'transform .12s' },
+      tap: () => setSel('color', c) }));
+    const priChips = ['high', 'med', 'low'].map(k => ({ label: this.tr(this.priLabels[k]), st: chip(st.sel.pri === k, this.priColors[k]), tap: () => setSel('pri', k) }));
+    const keypad = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', '⌫'].map(kk => ({ label: kk,
+      tap: () => this.setState({ logVal: kk === '⌫' ? st.logVal.slice(0, -1) : (st.logVal + kk).slice(0, 9) }) }));
+    const logColor = sheetGoal ? this.cats[sheetGoal.cat].color : '#FF8A3D';
+
+    // ---------- onboarding ----------
+    const onbCopy = [
+      { title: { es: 'Idioma y zona horaria', en: 'Language and time zone' }, sub: { es: 'Ajustamos fechas, números y semanas a tu contexto.', en: 'We tune dates, numbers and weeks to your context.' },
+        chips: [['es', 'Español (Colombia)'], ['en', 'English (US)'], ['tz1', 'Bogotá (GMT-5)'], ['tz2', 'Ciudad de México (GMT-6)']] },
+      { title: { es: '¿Qué quieres mover este año?', en: 'What do you want to move this year?' }, sub: { es: 'Elige las categorías que te importan. Puedes cambiarlas después.', en: 'Pick the categories that matter. You can change them later.' }, chips: 'cats' },
+      { title: { es: 'Arranca con algo concreto', en: 'Start with something concrete' }, sub: { es: 'Escoge una plantilla y la dejamos lista con datos de ejemplo.', en: 'Pick a template and we set it up with sample data.' },
+        chips: [['p1', '📚 Leer 4 libros'], ['p2', '💰 Ahorrar 25.000 USD'], ['p3', '🏃 Media maratón'], ['p4', '🧘 Meditar a diario']] }
+    ];
+    const oc = onbCopy[st.onbStep - 1];
+    const onbChips = oc.chips === 'cats'
+      ? Object.keys(this.cats).map(k => { const c = this.cats[k]; return { label: c.emoji + '  ' + this.tr({ es: c.es, en: c.en }), st: chip(!!st.onbSel[k], c.color),
+          tap: () => { const s = Object.assign({}, st.onbSel); s[k] = !s[k]; this.setState({ onbSel: s }); } }; })
+      : oc.chips.map(p => ({ label: p[1], st: chip(!!st.onbSel[p[0]]),
+          tap: () => { const s = Object.assign({}, st.onbSel); s[p[0]] = !s[p[0]]; if (p[0] === 'es' || p[0] === 'en') this.setState({ locale: p[0] }); this.setState({ onbSel: s }); } }));
+
+    return {
+      t: t, rootVars: rootVars, tintStyle: tintStyle,
+      isAuth: isAuth, isApp: !isAuth, isWelcome: screen === 'welcome',
+      isForm: screen === 'login' || screen === 'signup' || screen === 'forgot',
+      isLogin: screen === 'login', isSignup: screen === 'signup', isForgot: screen === 'forgot',
+      needsPassword: screen !== 'forgot',
+      authTitle: screen === 'login' ? t.signIn : screen === 'signup' ? t.signUp : t.forgot.replace('¿', '').replace('?', ''),
+      authCta: screen === 'forgot' ? t.resetCta : screen === 'signup' ? t.signUp : t.signIn,
+      goSignup: () => this.go('signup'), goLogin: () => this.go('login'), goForgot: () => this.go('forgot'),
+      goWelcome: () => this.go('welcome'), goApp: () => this.go('today'),
+      authSubmit: () => this.go(screen === 'signup' ? 'onb' : 'today'),
+      isOnb: screen === 'onb', onbStepLabel: (this.loc() === 'es' ? 'PASO ' : 'STEP ') + st.onbStep + ' / 3',
+      onbTitle: this.tr(oc.title), onbSub: this.tr(oc.sub), onbChips: onbChips,
+      onbCta: st.onbStep < 3 ? (this.loc() === 'es' ? 'Continuar' : 'Continue') : (this.loc() === 'es' ? 'Entrar a Milestone' : 'Enter Milestone'),
+      onbNext: () => st.onbStep < 3 ? this.setState({ onbStep: st.onbStep + 1 }) : this.go('today'),
+      onbDots: [1, 2, 3].map(i => ({ st: { flex: 1, height: '4px', borderRadius: '999px', background: i <= st.onbStep ? '#FF8A3D' : 'rgba(255,255,255,.16)', transition: 'background .25s' } })),
+
+      shellStyle: shellStyle, mainStyle: mainStyle, screenStyle: screenStyle, gridStyle: gridStyle,
+      navStyle: navStyle, navPillStyle: navPillStyle, navItems: navItems,
+      showTopBar: screen !== 'settings', headerTitle: screen === 'today' ? t.today : screen === 'goals' || screen === 'goal' ? t.goals : screen === 'habits' ? t.habits : screen === 'tasks' ? t.tasks : t.more,
+      isHabitsScreen: screen === 'habits',
+      toggleHabitsView: () => this.setState({ habitsView: st.habitsView === 'week' ? 'year' : 'week' }),
+      notify: () => this.toast(this.loc() === 'es' ? '3 recordatorios pendientes hoy' : '3 reminders pending today'),
+      goSettings: () => this.go('settings'), goProfile: () => this.go('more'),
+      goBackFromSettings: () => this.go('more'),
+
+      showToday: screen === 'today', showGoals: screen === 'goals' || (screen === 'goal' && !isDesktop),
+      showHabitsWeek: screen === 'habits' && st.habitsView === 'week',
+      showHabitsYear: screen === 'habits' && st.habitsView === 'year',
+      showTasks: screen === 'tasks', showMore: screen === 'more', showSettings: screen === 'settings',
+
+      todayDate: new Intl.DateTimeFormat(this.L(), { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date(2026, 7, 13)),
+      todaySummary: remaining === 0 ? (this.loc() === 'es' ? 'Todo hecho por hoy.' : 'All done for today.')
+        : (this.loc() === 'es' ? 'Te quedan ' + remaining + ' cosas por hoy' : remaining + ' things left for today'),
+      dayPct: dayPctN + '%', ringOffset: 213.6 - 213.6 * (st.mounted ? dayPctN : 0) / 100,
+      allDone: remaining === 0, todayHabits: todayHabits, todayTasks: todayTaskData.map(mkTask),
+      staleGoals: [this.goals[2], this.goals[5]].map(mkGoal),
+
+      goalGroups: goalGroups, hasDetail: !!detailGoal, d: d,
+      detailWrapStyle: detailWrapStyle, detailTintStyle: detailTintStyle, detailInnerStyle: detailInnerStyle,
+      closeGoal: () => this.setState({ goalId: null, screen: isDesktop ? 'goals' : 'goals', flip: !st.flip }),
+      openEditGoal: () => this.setState({ sheet: 'goal' }),
+
+      weekHabits: weekHabits, yearHabits: yearHabits, weekRange: this.weekRangeLabel(),
+      prevWeek: () => this.setState({ weekOffset: st.weekOffset - 1 }), nextWeek: () => this.setState({ weekOffset: st.weekOffset + 1 }),
+      thisWeek: () => this.setState({ weekOffset: 0 }),
+      todayPillSt: { height: '30px', padding: '0 14px', borderRadius: '999px', fontSize: '13px', fontWeight: 600,
+        background: st.weekOffset === 0 ? 'rgba(124,92,255,.35)' : 'var(--g2)',
+        border: '1px solid ' + (st.weekOffset === 0 ? 'rgba(124,92,255,.7)' : 'var(--gbd)'), transition: 'background .18s' },
+
+      taskGroups: taskGroups, openTaskSheet: () => this.setState({ sheet: 'task' }),
+      moreItems: this.moreMenu.map(m => ({ icon: m.icon, label: this.tr(m.l), hasValue: !!m.v, value: m.v ? this.tr(m.v) : '',
+        tap: () => m.go ? this.go(m.go) : this.toast(this.tr(m.l) + (this.loc() === 'es' ? ': pantalla en camino' : ': screen coming up')) })),
+      settingsGroups: settingsGroups,
+
+      fabStyle: { position: 'fixed', zIndex: 40, width: '58px', height: '58px', borderRadius: '999px', display: 'grid', placeItems: 'center',
+        right: isMobile ? '20px' : '28px', bottom: isMobile ? 'calc(84px + env(safe-area-inset-bottom))' : '28px',
+        background: screen === 'habits' ? '#7C5CFF' : '#FF8A3D', color: screen === 'habits' ? '#fff' : '#1A1A1A',
+        boxShadow: '0 0 0 1px rgba(255,255,255,.16), 0 10px 34px ' + (screen === 'habits' ? 'rgba(124,92,255,.5)' : 'rgba(255,138,61,.45)'),
+        opacity: (screen === 'settings' || screen === 'more' || (detailOpenMobile)) ? 0 : 1,
+        pointerEvents: (screen === 'settings' || screen === 'more' || detailOpenMobile) ? 'none' : 'auto',
+        transition: 'opacity .2s,transform .18s cubic-bezier(.2,0,0,1),filter .18s' },
+      fabIconStyle: { fontSize: '28px', fontWeight: 300, lineHeight: 1, display: 'block',
+        transform: sheetOpen ? 'rotate(45deg)' : 'none', transition: 'transform .26s cubic-bezier(.2,0,0,1)' },
+      fabTap: () => this.setState({ sheet: screen === 'habits' ? 'habit' : screen === 'tasks' ? 'task' : 'goal' }),
+
+      sheetStyle: sheetStyle, sheetScrimStyle: sheetScrimStyle, sheetTitle: sheetTitle,
+      closeSheet: () => this.setState({ sheet: null }),
+      saveSheet: () => { this.setState({ sheet: null }); this.toast(this.loc() === 'es' ? 'Guardado' : 'Saved'); },
+      sheetIsLog: st.sheet === 'log', sheetIsGoal: st.sheet === 'goal', sheetIsHabit: st.sheet === 'habit', sheetIsTask: st.sheet === 'task',
+      logGoalTitle: sheetGoal ? this.tr(sheetGoal.title).toUpperCase() : '',
+      logValue: st.logVal || (sheetGoal ? this.num(sheetGoal.cur) : '0'),
+      logUnit: sheetGoal ? this.tr(sheetGoal.unit) : '', keypad: keypad,
+      logSaveSt: { height: '54px', borderRadius: '16px', background: logColor, color: '#1A1A1A', fontSize: '16px', fontWeight: 700, transition: 'filter .18s,transform .18s' },
+      saveLog: () => { this.setState({ sheet: null }); this.toast(this.loc() === 'es' ? 'Avance registrado' : 'Progress logged'); },
+      catChips: catChips, tfChips: tfChips, typeChips: typeChips, habitTypeChips: habitTypeChips,
+      freqChips: freqChips, dayToggles: dayToggles, colorChips: colorChips, priChips: priChips,
+      todayShort: this.dateFmt('2026-08-13'),
+
+      toastMsg: st.toast || '', undoToast: () => this.setState({ toast: null }),
+      toastStyle: { position: 'fixed', left: isMobile ? '16px' : '50%', right: isMobile ? '16px' : 'auto',
+        transform: isMobile ? 'none' : 'translateX(-50%)', width: isMobile ? 'auto' : 'min(420px,90vw)',
+        bottom: isMobile ? 'calc(96px + env(safe-area-inset-bottom))' : '28px', zIndex: 70,
+        display: 'flex', alignItems: 'center', gap: '14px', padding: '13px 16px', borderRadius: '16px',
+        background: 'rgba(20,28,79,0.9)', border: '1px solid var(--gbd)', backdropFilter: 'blur(24px) saturate(160%)',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,.10)',
+        opacity: st.toast ? 1 : 0, pointerEvents: st.toast ? 'auto' : 'none',
+        translate: st.toast ? '0 0' : '0 12px', transition: 'opacity .22s,translate .22s cubic-bezier(.2,0,0,1)' }
+    };
+  }
+}
+</script>
+</body>
+</html>
