@@ -13,7 +13,12 @@ import {
 } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { DEFAULT_CATEGORIES } from "./defaults";
-import { SAMPLE_GOALS, SAMPLE_HABITS, SAMPLE_TASKS } from "./sample-data";
+import {
+  ONBOARDING_TEMPLATES,
+  SAMPLE_GOALS,
+  SAMPLE_HABITS,
+  SAMPLE_TASKS,
+} from "./sample-data";
 import { addDays, mondayIndex, todayISO, weekStart, type ISODate } from "./dates";
 import type { Locale } from "./i18n";
 
