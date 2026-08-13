@@ -370,6 +370,45 @@ input[type="number"] {
 }
 
 /* ------------------------------------------------------------------ */
+/* Contenedor principal                                                 */
+/* ------------------------------------------------------------------ */
+
+.ms-shell {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+}
+
+.ms-main {
+  padding: 0 16px calc(110px + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 768px) {
+  .ms-shell {
+    padding-left: 94px;
+  }
+  .ms-main {
+    padding: 6px 22px 48px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .ms-shell {
+    padding-left: 240px;
+  }
+  .ms-main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 10px 24px 56px;
+    transition: margin-right 0.3s var(--ease-ms);
+  }
+  /* Con el panel de detalle abierto, la lista se corre para dejarle sitio. */
+  .ms-shell[data-detail="true"] .ms-main {
+    margin-right: 440px;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /* Navegación                                                          */
 /* Tres formas distintas del mismo componente: barra inferior en móvil, */
 /* riel vertical en tablet y barra lateral en escritorio.               */
