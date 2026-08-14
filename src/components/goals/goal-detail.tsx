@@ -123,22 +123,26 @@ export function GoalDetail({ goal }: { goal: GoalDetailData }) {
     });
   };
 
+  const addMilestone = () => {
+    const title = draft.trim();
+    if (!title) return;
+    setDraft("");
+    setAdding(false);
+    startTransition(async () => {
+      await addMilestoneAction(goal.id, title);
+    });
+  };
+
+  const removeMilestone = (id: string) => {
+    startTransition(async () => {
+      await deleteMilestoneAction(id);
+    });
+  };
+
   const cta = () => {
+    /* En metas por hitos la acción natural es sumar el siguiente paso. */
     if (goal.type === "milestone") {
-      open({
-        type: "goal",
-        goalId: goal.id,
-        initial: {
-          title: goal.title,
-          description: goal.description ?? "",
-          why: goal.why ?? "",
-          type: goal.type,
-          timeframe: goal.timeframe as "week" | "month" | "quarter" | "year" | "long_term",
-          targetValue: String(goal.targetValue),
-          unit: goal.unit ?? "",
-          targetDate: goal.targetDate ?? "",
-        },
-      });
+      setAdding(true);
       return;
     }
     open({
