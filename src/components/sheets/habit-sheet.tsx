@@ -206,12 +206,12 @@ export function HabitSheet({
           <>
             <FieldHelp>{h.habitWeeklyTarget}</FieldHelp>
             <label className="flex items-center gap-3">
-            <input
-              value={v.weeklyTarget}
-              onChange={(e) => set("weeklyTarget", e.target.value)}
-              inputMode="numeric"
-              className="field tabular w-24 flex-none"
-            />
+              <input
+                value={v.weeklyTarget}
+                onChange={(e) => set("weeklyTarget", e.target.value)}
+                inputMode="numeric"
+                className="field tabular w-24 flex-none"
+              />
               <span className="text-sm text-[var(--t2)]">{t.timesPerWeek}</span>
             </label>
           </>
