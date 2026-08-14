@@ -221,30 +221,30 @@ export function HabitSheet({
           <>
             <FieldHelp>{h.habitDays}</FieldHelp>
             <div className="flex gap-1.5">
-            {names.map((dn, i) => {
-              const active = v.days.includes(i);
-              return (
-                <button
-                  key={dn}
-                  type="button"
-                  onClick={() =>
-                    set(
-                      "days",
-                      active ? v.days.filter((d) => d !== i) : [...v.days, i],
-                    )
-                  }
-                  aria-pressed={active}
-                  className="h-10 flex-1 rounded-xl text-xs font-bold transition-colors"
-                  style={{
-                    background: active ? "rgba(124,92,255,.35)" : "var(--g2)",
-                    border: `1px solid ${active ? "rgba(124,92,255,.7)" : "var(--gbd)"}`,
-                    color: active ? "#fff" : "var(--t3)",
-                  }}
-                >
-                  {dn}
-                </button>
-              );
-            })}
+              {names.map((dn, i) => {
+                const active = v.days.includes(i);
+                return (
+                  <button
+                    key={dn}
+                    type="button"
+                    onClick={() =>
+                      set(
+                        "days",
+                        active ? v.days.filter((d) => d !== i) : [...v.days, i],
+                      )
+                    }
+                    aria-pressed={active}
+                    className="h-10 flex-1 rounded-xl text-xs font-bold transition-colors"
+                    style={{
+                      background: active ? "rgba(124,92,255,.35)" : "var(--g2)",
+                      border: `1px solid ${active ? "rgba(124,92,255,.7)" : "var(--gbd)"}`,
+                      color: active ? "#fff" : "var(--t3)",
+                    }}
+                  >
+                    {dn}
+                  </button>
+                );
+              })}
             </div>
           </>
         ) : null}
