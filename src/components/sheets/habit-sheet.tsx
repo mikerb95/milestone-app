@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Sheet } from "@/components/ui/sheet";
+import { FieldHelp, Sheet } from "@/components/ui/sheet";
 import { Chip, Eyebrow } from "@/components/ui/chip";
 import { useApp } from "@/components/app-provider";
 import { useToast } from "@/components/ui/toast";
 import { createHabitAction, updateHabitAction } from "@/actions/habits";
 import { HABIT_COLORS, HABIT_EMOJI_CHOICES } from "@/lib/defaults";
-import { dayNames, frequencyLabels, habitTypeLabels, tr } from "@/lib/i18n";
+import { dayNames, frequencyLabels, habitTypeLabels, help, tr } from "@/lib/i18n";
 
 export type HabitSheetValues = {
   name: string;
@@ -35,6 +35,7 @@ export function HabitSheet({
   initial?: Partial<HabitSheetValues>;
 }) {
   const { t, locale } = useApp();
+  const h = help(locale);
   const { toast } = useToast();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -90,7 +91,12 @@ export function HabitSheet({
     v.type === "count" ? t.timesPerDay : v.type === "duration" ? t.minutesPerDay : "";
 
   return (
-    <Sheet open={open} onClose={onClose} title={habitId ? t.editHabit : t.newHabit}>
+    <Sheet
+      open={open}
+      onClose={onClose}
+      title={habitId ? t.editHabit : t.newHabit}
+      helpLabel={h.helpToggle}
+    >
       <div className="flex flex-col gap-3.5">
         <div className="flex gap-2.5">
           <button
@@ -110,6 +116,7 @@ export function HabitSheet({
             maxLength={120}
           />
         </div>
+        <FieldHelp>{h.habitName}</FieldHelp>
 
         {emojiOpen ? (
           <div className="flex flex-wrap gap-2">
@@ -131,6 +138,7 @@ export function HabitSheet({
         ) : null}
 
         <Eyebrow>{t.color}</Eyebrow>
+        <FieldHelp>{h.habitColor}</FieldHelp>
         <div className="flex flex-wrap gap-2.5">
           {HABIT_COLORS.map((c) => (
             <button
@@ -150,6 +158,7 @@ export function HabitSheet({
         </div>
 
         <Eyebrow>{t.habitType}</Eyebrow>
+        <FieldHelp>{h.habitType}</FieldHelp>
         <div className="flex flex-wrap gap-2">
           {TYPES.map((k) => (
             <Chip
@@ -164,18 +173,22 @@ export function HabitSheet({
         </div>
 
         {v.type !== "binary" ? (
-          <label className="flex items-center gap-3">
+          <>
+            <FieldHelp>{h.habitTarget}</FieldHelp>
+            <label className="flex items-center gap-3">
             <input
               value={v.targetValue}
               onChange={(e) => set("targetValue", e.target.value)}
               inputMode="numeric"
               className="field tabular w-24 flex-none"
             />
-            <span className="text-sm text-[var(--t2)]">{targetHint}</span>
-          </label>
+              <span className="text-sm text-[var(--t2)]">{targetHint}</span>
+            </label>
+          </>
         ) : null}
 
         <Eyebrow>{t.frequency}</Eyebrow>
+        <FieldHelp>{h.habitFrequency}</FieldHelp>
         <div className="flex flex-wrap gap-2">
           {FREQS.map((k) => (
             <Chip
@@ -190,19 +203,24 @@ export function HabitSheet({
         </div>
 
         {v.frequency === "weekly_n" ? (
-          <label className="flex items-center gap-3">
+          <>
+            <FieldHelp>{h.habitWeeklyTarget}</FieldHelp>
+            <label className="flex items-center gap-3">
             <input
               value={v.weeklyTarget}
               onChange={(e) => set("weeklyTarget", e.target.value)}
               inputMode="numeric"
               className="field tabular w-24 flex-none"
             />
-            <span className="text-sm text-[var(--t2)]">{t.timesPerWeek}</span>
-          </label>
+              <span className="text-sm text-[var(--t2)]">{t.timesPerWeek}</span>
+            </label>
+          </>
         ) : null}
 
         {v.frequency === "specific" ? (
-          <div className="flex gap-1.5">
+          <>
+            <FieldHelp>{h.habitDays}</FieldHelp>
+            <div className="flex gap-1.5">
             {names.map((dn, i) => {
               const active = v.days.includes(i);
               return (
@@ -227,7 +245,8 @@ export function HabitSheet({
                 </button>
               );
             })}
-          </div>
+            </div>
+          </>
         ) : null}
 
         {error ? (
