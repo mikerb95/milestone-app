@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Sheet } from "@/components/ui/sheet";
+import { FieldHelp, Sheet } from "@/components/ui/sheet";
 import { useApp } from "@/components/app-provider";
 import { useToast } from "@/components/ui/toast";
 import { logProgressAction } from "@/actions/goals";
 import { formatNumber } from "@/lib/dates";
+import { help } from "@/lib/i18n";
 
 export type LogTarget = {
   goalId: string;
@@ -30,6 +31,7 @@ export function LogSheet({
   target: LogTarget;
 }) {
   const { t, locale } = useApp();
+  const h = help(locale);
   const { toast } = useToast();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -69,7 +71,7 @@ export function LogSheet({
   };
 
   return (
-    <Sheet open={open} onClose={onClose} title={t.logTitle}>
+    <Sheet open={open} onClose={onClose} title={t.logTitle} helpLabel={h.helpToggle}>
       <div className="flex flex-col gap-3.5">
         <div className="text-[15px] font-semibold text-pretty">{target.title}</div>
 
@@ -132,6 +134,7 @@ export function LogSheet({
           className="field"
           maxLength={300}
         />
+        <FieldHelp>{h.logNote}</FieldHelp>
 
         {error ? (
           <p role="alert" className="text-[13px] font-medium text-[var(--danger)]">

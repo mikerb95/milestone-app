@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Sheet } from "@/components/ui/sheet";
+import { FieldHelp, Sheet } from "@/components/ui/sheet";
 import { Chip, Eyebrow } from "@/components/ui/chip";
 import { useApp } from "@/components/app-provider";
 import { useToast } from "@/components/ui/toast";
 import { createTaskAction, updateTaskAction } from "@/actions/tasks";
-import { PRIORITY_COLORS, priorityLabels, recurrenceLabels, tr } from "@/lib/i18n";
+import { PRIORITY_COLORS, help, priorityLabels, recurrenceLabels, tr } from "@/lib/i18n";
 import type { GoalOption } from "./sheet-provider";
 
 export type TaskSheetValues = {
@@ -37,6 +37,7 @@ export function TaskSheet({
   initial?: Partial<TaskSheetValues>;
 }) {
   const { t, locale } = useApp();
+  const h = help(locale);
   const { toast } = useToast();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -90,7 +91,12 @@ export function TaskSheet({
   };
 
   return (
-    <Sheet open={open} onClose={onClose} title={taskId ? t.editTask : t.newTask}>
+    <Sheet
+      open={open}
+      onClose={onClose}
+      title={taskId ? t.editTask : t.newTask}
+      helpLabel={h.helpToggle}
+    >
       <div className="flex flex-col gap-3.5">
         <input
           value={v.title}
@@ -99,7 +105,9 @@ export function TaskSheet({
           className="field h-[50px] text-base font-semibold"
           maxLength={200}
         />
+        <FieldHelp>{h.taskTitle}</FieldHelp>
 
+        <FieldHelp>{h.taskPriority}</FieldHelp>
         <div className="flex flex-wrap gap-2">
           {PRIORITIES.map((k) => (
             <Chip
@@ -125,6 +133,7 @@ export function TaskSheet({
             className="tabular bg-transparent text-[15px] text-[var(--t2)] outline-none"
           />
         </label>
+        <FieldHelp>{h.taskDueDate}</FieldHelp>
 
         <label
           className="flex items-center justify-between gap-3 rounded-2xl px-4 py-3.5"
@@ -146,7 +155,9 @@ export function TaskSheet({
             ))}
           </select>
         </label>
+        <FieldHelp>{h.taskGoal}</FieldHelp>
 
+        <FieldHelp>{h.taskRecurrence}</FieldHelp>
         <div className="flex flex-wrap items-center gap-2">
           <Eyebrow>↻</Eyebrow>
           <Chip active={v.recurrence === ""} onClick={() => set("recurrence", "")}>
@@ -163,6 +174,7 @@ export function TaskSheet({
           ))}
         </div>
 
+        <FieldHelp>{h.taskSubtasks}</FieldHelp>
         <div className="flex flex-col gap-2">
           {v.subtasks.map((s, i) => (
             <div
