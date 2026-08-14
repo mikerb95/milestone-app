@@ -131,6 +131,9 @@ export async function createFromTemplates(
   }
 }
 
+/** Filas por sentencia al sembrar: por encima de esto Turso agota el tiempo. */
+const CHUNK_SIZE = 50;
+
 /** RNG determinista: el mismo usuario siempre ve el mismo histórico. */
 function seededRandom(seed: number) {
   let s = seed * 9301;
