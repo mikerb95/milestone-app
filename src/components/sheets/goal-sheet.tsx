@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Sheet } from "@/components/ui/sheet";
+import { FieldHelp, Sheet } from "@/components/ui/sheet";
 import { Chip, ChipTile, Eyebrow } from "@/components/ui/chip";
 import { useApp } from "@/components/app-provider";
 import { useToast } from "@/components/ui/toast";
 import { createGoalAction, updateGoalAction } from "@/actions/goals";
 import { categoryName } from "@/lib/defaults";
-import { goalTypeLabels, timeframePlain, tr } from "@/lib/i18n";
+import { goalTypeLabels, help, timeframePlain, tr } from "@/lib/i18n";
 import type { CategoryOption } from "./sheet-provider";
 
 export type GoalSheetValues = {
@@ -43,6 +43,7 @@ export function GoalSheet({
   initial?: Partial<GoalSheetValues>;
 }) {
   const { t, locale, settings } = useApp();
+  const h = help(locale);
   const { toast } = useToast();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -113,6 +114,7 @@ export function GoalSheet({
       open={open}
       onClose={onClose}
       title={goalId ? t.editGoal : t.newGoal}
+      helpLabel={h.helpToggle}
     >
       <div className="flex flex-col gap-3.5">
         <input
@@ -122,6 +124,8 @@ export function GoalSheet({
           className="field h-[50px] text-base font-semibold"
           maxLength={160}
         />
+        <FieldHelp>{h.goalTitle}</FieldHelp>
+
         <textarea
           value={v.description}
           onChange={(e) => set("description", e.target.value)}
@@ -130,6 +134,8 @@ export function GoalSheet({
           className="resize-none rounded-2xl px-3.5 py-3 text-[15px] outline-none focus:outline-2 focus:outline-[var(--acc)] focus:outline-offset-2"
           style={{ background: "var(--g2)", border: "1px solid var(--gbd)" }}
         />
+        <FieldHelp>{h.goalDescription}</FieldHelp>
+
         <textarea
           value={v.why}
           onChange={(e) => set("why", e.target.value)}
@@ -138,8 +144,10 @@ export function GoalSheet({
           className="resize-none rounded-2xl px-3.5 py-3 text-[15px] outline-none focus:outline-2 focus:outline-[var(--acc)] focus:outline-offset-2"
           style={{ background: "var(--g2)", border: "1px solid var(--gbd)" }}
         />
+        <FieldHelp>{h.goalWhy}</FieldHelp>
 
         <Eyebrow>{t.category}</Eyebrow>
+        <FieldHelp>{h.goalCategory}</FieldHelp>
         <div className="grid grid-cols-3 gap-2">
           {categories.map((c) => (
             <ChipTile
@@ -154,6 +162,7 @@ export function GoalSheet({
         </div>
 
         <Eyebrow>{t.timeframe}</Eyebrow>
+        <FieldHelp>{h.goalTimeframe}</FieldHelp>
         <div className="flex flex-wrap gap-2">
           {TIMEFRAMES.map((k) => (
             <Chip
@@ -167,6 +176,7 @@ export function GoalSheet({
         </div>
 
         <Eyebrow>{t.goalType}</Eyebrow>
+        <FieldHelp>{h.goalType}</FieldHelp>
         <div className="flex flex-wrap gap-2">
           {TYPES.map((k) => (
             <Chip key={k} active={v.type === k} onClick={() => set("type", k)}>
@@ -176,7 +186,9 @@ export function GoalSheet({
         </div>
 
         {needsTarget ? (
-          <div className="flex gap-2.5">
+          <>
+            <FieldHelp>{h.goalTarget}</FieldHelp>
+            <div className="flex gap-2.5">
             <input
               value={v.targetValue}
               onChange={(e) => set("targetValue", e.target.value)}
@@ -191,12 +203,14 @@ export function GoalSheet({
               className="field w-[110px] flex-none"
               maxLength={40}
             />
-          </div>
+            </div>
+          </>
         ) : null}
 
         {v.type === "milestone" ? (
           <div className="flex flex-col gap-2">
             <Eyebrow>{t.milestones}</Eyebrow>
+            <FieldHelp>{h.goalMilestones}</FieldHelp>
             {v.milestones.map((m, i) => (
               <div
                 key={`${m}-${i}`}
@@ -257,6 +271,7 @@ export function GoalSheet({
             className="tabular bg-transparent text-[15px] text-[var(--t2)] outline-none"
           />
         </label>
+        <FieldHelp>{h.goalTargetDate}</FieldHelp>
 
         <button
           type="button"
@@ -280,6 +295,7 @@ export function GoalSheet({
             />
           </span>
         </button>
+        <FieldHelp>{h.goalReminder}</FieldHelp>
 
         {error ? (
           <p role="alert" className="text-[13px] font-medium text-[var(--danger)]">

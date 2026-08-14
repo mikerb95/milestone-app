@@ -1,6 +1,24 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+
+/** Está activo el modo ayuda de la hoja que envuelve a este componente. */
+const SheetHelpContext = createContext(false);
+
+/**
+ * Explicación de un campo. Solo se pinta cuando el usuario pulsa el "?" de la
+ * cabecera, así que el formulario se mantiene limpio mientras no haga falta.
+ */
+export function FieldHelp({ children }: { children: React.ReactNode }) {
+  const visible = useContext(SheetHelpContext);
+  if (!visible) return null;
+
+  return (
+    <p className="-mt-1 text-pretty text-[13px] leading-snug text-[var(--t3)]">
+      {children}
+    </p>
+  );
+}
 
 /**
  * Hoja inferior en móvil, diálogo centrado a partir de tablet. Reproduce el
@@ -10,16 +28,20 @@ export function Sheet({
   open,
   onClose,
   title,
+  helpLabel,
   children,
   footer,
 }: {
   open: boolean;
   onClose: () => void;
   title: string;
+  /** Texto accesible del botón "?". Si falta, el botón no aparece. */
+  helpLabel?: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const [helpOpen, setHelpOpen] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -89,6 +111,23 @@ export function Sheet({
           <div className="min-w-0 flex-1 text-[22px] font-bold tracking-[-0.02em]">
             {title}
           </div>
+          {helpLabel ? (
+            <button
+              type="button"
+              onClick={() => setHelpOpen((o) => !o)}
+              aria-label={helpLabel}
+              title={helpLabel}
+              aria-pressed={helpOpen}
+              className="grid h-[34px] w-[34px] place-items-center rounded-full text-[15px] font-bold transition-colors"
+              style={{
+                background: helpOpen ? "rgba(108,140,245,.28)" : "var(--g2)",
+                border: `1px solid ${helpOpen ? "rgba(108,140,245,.6)" : "var(--gbd)"}`,
+                color: helpOpen ? "#A8BCFF" : "var(--t2)",
+              }}
+            >
+              ?
+            </button>
+          ) : null}
           <button
             type="button"
             onClick={onClose}
@@ -99,7 +138,9 @@ export function Sheet({
             ×
           </button>
         </div>
-        {children}
+        <SheetHelpContext.Provider value={helpOpen}>
+          {children}
+        </SheetHelpContext.Provider>
         {footer}
       </div>
       <style>{`

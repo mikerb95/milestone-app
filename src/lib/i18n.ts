@@ -388,6 +388,89 @@ export function tr(
   return map[key]?.[locale] ?? key;
 }
 
+/**
+ * Explicaciones que muestra el botón "?" de las hojas. Van aparte del
+ * diccionario principal para no mezclarlas con las etiquetas de la interfaz.
+ */
+export const helpText = {
+  es: {
+    helpToggle: "Qué significa cada campo",
+
+    goalTitle: "El resultado que buscas, en una frase. Por ejemplo: leer 4 libros este mes.",
+    goalDescription: "Una línea de contexto. Es lo que se lee bajo el título en la tarjeta.",
+    goalWhy: "Tu motivo de fondo. Aparece en el detalle para los días en que flojee el impulso.",
+    goalCategory: "Agrupa la meta y le presta su color e icono en toda la app.",
+    goalTimeframe: "El plazo. Ordena las metas en la lista y propone una fecha meta.",
+    goalType:
+      "Numérica: cuentas unidades hasta un objetivo. Porcentaje: avanzas de 0 a 100. Hitos: pasos que vas marcando. Binaria: hecha o no.",
+    goalTarget: "El número al que quieres llegar y cómo se llama lo que cuentas.",
+    goalMilestones: "Los pasos concretos. El avance de la meta es cuántos llevas cumplidos.",
+    goalTargetDate: "Cuándo quieres tenerla lista. Si la dejas vacía usamos la del horizonte.",
+    goalReminder: "Te avisa cuando la meta lleva demasiado tiempo sin movimiento.",
+
+    habitName: "El nombre y el emoji con los que lo reconocerás en la rejilla.",
+    habitColor: "Tiñe las celdas de la semana y el mapa de calor anual.",
+    habitType:
+      "Binario: lo hiciste o no. Contable: cuentas repeticiones. Duración: acumulas minutos.",
+    habitTarget: "Cuánto hace falta para dar el día por cumplido.",
+    habitFrequency:
+      "Qué días cuentan. Los días que no tocan no rompen la racha si los dejas en blanco.",
+    habitWeeklyTarget: "Cuántos días de la semana quieres cumplirlo, sin fijar cuáles.",
+    habitDays: "Los días concretos en los que toca. El resto ni suma ni resta.",
+
+    taskTitle: "Qué hay que hacer, en una frase corta.",
+    taskPriority: "Ordena la lista: lo alto sube al principio de su grupo.",
+    taskDueDate: "Decide en qué grupo cae: vencidas, hoy, mañana, esta semana o después.",
+    taskGoal: "La conecta con una meta y le pone su etiqueta de color.",
+    taskRecurrence: "Al completarla no se cierra: se reprograma sola al siguiente ciclo.",
+    taskSubtasks: "Pasos internos de la tarea. No cuentan aparte en el progreso del día.",
+
+    logValue: "El total acumulado hasta hoy, no lo que sumaste en esta sesión.",
+    logNote: "Para acordarte de qué pasó cuando revises el historial.",
+  },
+  en: {
+    helpToggle: "What each field means",
+
+    goalTitle: "The outcome you want, in one sentence. For example: read 4 books this month.",
+    goalDescription: "One line of context. It shows under the title on the card.",
+    goalWhy: "Your underlying reason. It shows in the detail for the days motivation dips.",
+    goalCategory: "Groups the goal and lends it its color and icon across the app.",
+    goalTimeframe: "The horizon. It sorts goals in the list and suggests a target date.",
+    goalType:
+      "Numeric: count units toward a target. Percent: move from 0 to 100. Milestones: steps you tick off. Binary: done or not.",
+    goalTarget: "The number you want to reach and the name of what you count.",
+    goalMilestones: "The concrete steps. Goal progress is how many you have ticked off.",
+    goalTargetDate: "When you want it done. Leave it empty and we use the horizon's date.",
+    goalReminder: "Nudges you when the goal has gone too long without movement.",
+
+    habitName: "The name and emoji you will recognise in the grid.",
+    habitColor: "Tints the week cells and the yearly heatmap.",
+    habitType:
+      "Binary: you did it or not. Countable: count repetitions. Duration: add up minutes.",
+    habitTarget: "How much it takes to call the day done.",
+    habitFrequency:
+      "Which days count. Days that are not scheduled will not break your streak.",
+    habitWeeklyTarget: "How many days a week you want it, without pinning which ones.",
+    habitDays: "The specific days it is due. The rest neither add nor subtract.",
+
+    taskTitle: "What needs doing, in a short sentence.",
+    taskPriority: "Sorts the list: high priority rises to the top of its group.",
+    taskDueDate: "Decides its group: overdue, today, tomorrow, this week or later.",
+    taskGoal: "Links it to a goal and gives it that goal's colored tag.",
+    taskRecurrence: "Completing it does not close it: it reschedules to the next cycle.",
+    taskSubtasks: "Inner steps of the task. They do not count separately in the day's progress.",
+
+    logValue: "The running total as of today, not what you added in this session.",
+    logNote: "So you remember what happened when you look back at the history.",
+  },
+} as const;
+
+export type HelpText = (typeof helpText)["es"];
+
+export function help(locale: Locale): HelpText {
+  return helpText[locale] as HelpText;
+}
+
 export function dayNames(locale: Locale): string[] {
   return locale === "es"
     ? ["LU", "MA", "MI", "JU", "VI", "SA", "DO"]
