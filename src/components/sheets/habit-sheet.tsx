@@ -176,12 +176,12 @@ export function HabitSheet({
           <>
             <FieldHelp>{h.habitTarget}</FieldHelp>
             <label className="flex items-center gap-3">
-            <input
-              value={v.targetValue}
-              onChange={(e) => set("targetValue", e.target.value)}
-              inputMode="numeric"
-              className="field tabular w-24 flex-none"
-            />
+              <input
+                value={v.targetValue}
+                onChange={(e) => set("targetValue", e.target.value)}
+                inputMode="numeric"
+                className="field tabular w-24 flex-none"
+              />
               <span className="text-sm text-[var(--t2)]">{targetHint}</span>
             </label>
           </>
