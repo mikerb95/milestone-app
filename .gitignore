@@ -13,3 +13,4 @@ next-env.d.ts
 /local.db
 /local.db-*
 node_modules
+.env*
