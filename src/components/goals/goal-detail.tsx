@@ -313,7 +313,7 @@ export function GoalDetail({ goal }: { goal: GoalDetailData }) {
           className="h-[54px] rounded-2xl text-base font-bold transition-[transform,filter] duration-200 hover:scale-[1.02] hover:brightness-110 active:scale-[0.97]"
           style={{ background: color, color: lightAccent ? "#1A1A1A" : "#fff" }}
         >
-          {goal.type === "milestone" ? t.updateMs : t.logProgress}
+          {goal.type === "milestone" ? t.addMilestone : t.logProgress}
         </button>
 
         {goal.why ? (
@@ -325,7 +325,7 @@ export function GoalDetail({ goal }: { goal: GoalDetailData }) {
           </div>
         ) : null}
 
-        {goal.type === "milestone" && goal.milestones.length ? (
+        {goal.type === "milestone" ? (
           <div className="flex flex-col gap-2.5">
             <div className="eyebrow">
               {t.milestones} ({doneCount}/{goal.milestones.length})
@@ -335,11 +335,9 @@ export function GoalDetail({ goal }: { goal: GoalDetailData }) {
                 const isDone = msState[m.id];
                 const isNext = !isDone && i === 0;
                 return (
-                  <button
+                  <div
                     key={m.id}
-                    type="button"
-                    onClick={() => toggleMs(m.id)}
-                    className="relative flex w-full items-center gap-3 rounded-2xl px-4 py-3.5 text-left transition-colors active:scale-[0.98]"
+                    className="group relative flex w-full items-center rounded-2xl transition-colors"
                     style={{
                       background: isNext ? "var(--g2)" : "var(--g1)",
                       border: `1px solid ${isNext ? "var(--gbd)" : "transparent"}`,
@@ -358,31 +356,40 @@ export function GoalDetail({ goal }: { goal: GoalDetailData }) {
                         background: isDone ? color + "99" : "rgba(255,255,255,.14)",
                       }}
                     />
-                    <span
-                      className="relative grid h-[22px] w-[22px] flex-none place-items-center rounded-full"
-                      style={{
-                        background: isDone ? color : "transparent",
-                        border: isDone
-                          ? `1px solid ${color}`
-                          : "1.6px solid rgba(255,255,255,.38)",
-                      }}
+                    <button
+                      type="button"
+                      onClick={() => toggleMs(m.id)}
+                      role="checkbox"
+                      aria-checked={isDone}
+                      className="flex min-w-0 flex-1 items-center gap-3 rounded-2xl px-4 py-3.5 text-left active:scale-[0.98]"
                     >
                       <span
-                        className="text-xs font-extrabold text-[#0B1038] transition-opacity duration-200"
-                        style={{ opacity: isDone ? 1 : 0 }}
+                        className="relative grid h-[22px] w-[22px] flex-none place-items-center rounded-full"
+                        style={{
+                          background: isDone ? color : "transparent",
+                          border: isDone
+                            ? `1px solid ${color}`
+                            : "1.6px solid rgba(255,255,255,.38)",
+                        }}
                       >
-                        ✓
+                        <span
+                          className="text-xs font-extrabold text-[#0B1038] transition-opacity duration-200"
+                          style={{ opacity: isDone ? 1 : 0 }}
+                        >
+                          ✓
+                        </span>
                       </span>
-                    </span>
-                    <span
-                      className="min-w-0 flex-1 text-pretty text-[15px]"
-                      style={{
-                        fontWeight: isNext ? 600 : 500,
-                        color: isDone ? "var(--t2)" : "var(--t1)",
-                      }}
-                    >
-                      {m.title}
-                    </span>
+                      <span
+                        className="min-w-0 flex-1 text-pretty text-[15px]"
+                        style={{
+                          fontWeight: isNext ? 600 : 500,
+                          color: isDone ? "var(--t2)" : "var(--t1)",
+                        }}
+                      >
+                        {m.title}
+                      </span>
+                    </button>
+
                     {isNext ? (
                       <span
                         className="flex-none rounded-full px-2.5 py-[3px] text-[10px] font-semibold tracking-[0.09em] text-[var(--t2)]"
@@ -391,9 +398,46 @@ export function GoalDetail({ goal }: { goal: GoalDetailData }) {
                         {t.next}
                       </span>
                     ) : null}
-                  </button>
+
+                    <button
+                      type="button"
+                      onClick={() => removeMilestone(m.id)}
+                      aria-label={t.delete}
+                      className="flex-none px-3 text-[var(--t3)] opacity-0 transition-[opacity,color] focus-visible:opacity-100 group-hover:opacity-100 hover:text-[var(--danger)]"
+                    >
+                      ×
+                    </button>
+                  </div>
                 );
               })}
+
+              {adding ? (
+                <div className="flex gap-2 pt-1">
+                  <input
+                    value={draft}
+                    onChange={(e) => setDraft(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        addMilestone();
+                      }
+                      if (e.key === "Escape") setAdding(false);
+                    }}
+                    placeholder={t.milestonePh}
+                    className="field flex-1"
+                    autoFocus
+                  />
+                  <button
+                    type="button"
+                    onClick={addMilestone}
+                    aria-label={t.addMilestone}
+                    className="grid h-12 w-12 flex-none place-items-center rounded-2xl text-xl transition-colors hover:bg-[var(--g3)]"
+                    style={{ background: "var(--g2)", border: "1px solid var(--gbd)" }}
+                  >
+                    +
+                  </button>
+                </div>
+              ) : null}
             </div>
           </div>
         ) : null}
