@@ -137,7 +137,7 @@ export function HabitWeekCard({ habit }: { habit: WeekHabit }) {
               toast(t.habitDeleted);
             })
           }
-          className="flex-none text-[var(--t3)] transition-colors hover:text-[var(--danger)]"
+          className="flex-none text-[var(--t3)] opacity-0 transition-[opacity,color] focus-visible:opacity-100 group-hover:opacity-100 hover:text-[var(--danger)]"
         >
           ×
         </button>
