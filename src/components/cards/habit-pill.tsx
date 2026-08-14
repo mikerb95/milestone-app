@@ -21,7 +21,7 @@ export function HabitPill({ habit }: { habit: HabitPillData }) {
     setComplete(next);
     startTransition(async () => {
       const res = await toggleTodayHabitAction(habit.id);
-      if ("value" in res) setComplete(res.value > 0);
+      if (res.ok && res.value !== undefined) setComplete(res.value > 0);
     });
   };
 
