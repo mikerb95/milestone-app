@@ -189,20 +189,20 @@ export function GoalSheet({
           <>
             <FieldHelp>{h.goalTarget}</FieldHelp>
             <div className="flex gap-2.5">
-            <input
-              value={v.targetValue}
-              onChange={(e) => set("targetValue", e.target.value)}
-              placeholder={t.targetValuePh}
-              inputMode="decimal"
-              className="field tabular flex-1"
-            />
-            <input
-              value={v.unit}
-              onChange={(e) => set("unit", e.target.value)}
-              placeholder={t.unitPh}
-              className="field w-[110px] flex-none"
-              maxLength={40}
-            />
+              <input
+                value={v.targetValue}
+                onChange={(e) => set("targetValue", e.target.value)}
+                placeholder={t.targetValuePh}
+                inputMode="decimal"
+                className="field tabular flex-1"
+              />
+              <input
+                value={v.unit}
+                onChange={(e) => set("unit", e.target.value)}
+                placeholder={t.unitPh}
+                className="field w-[110px] flex-none"
+                maxLength={40}
+              />
             </div>
           </>
         ) : null}
