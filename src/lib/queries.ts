@@ -21,6 +21,7 @@ import {
   type UserSettings,
 } from "@/db/schema";
 import { bootstrapUser } from "./bootstrap";
+import { isEntryComplete, isHabitScheduled } from "./domain";
 import { addDays, todayISO, weekStart, type ISODate } from "./dates";
 
 /* ------------------------------------------------------------------ */
@@ -313,6 +314,46 @@ export async function getStaleGoals(
       return av - bv;
     })
     .slice(0, limit);
+}
+
+/**
+ * Cuántas cosas quedan por hoy: hábitos programados sin cerrar más tareas
+ * vencidas o de hoy. Es el número de la insignia y del saludo de la pantalla Hoy.
+ */
+export async function getTodayPendingCount(
+  userId: string,
+  today: ISODate,
+): Promise<number> {
+  const [habitRows, entryRows, taskRows] = await Promise.all([
+    db
+      .select()
+      .from(habits)
+      .where(and(eq(habits.userId, userId), eq(habits.archived, false))),
+    db
+      .select({ habitId: habitEntries.habitId, value: habitEntries.value })
+      .from(habitEntries)
+      .innerJoin(habits, eq(habitEntries.habitId, habits.id))
+      .where(and(eq(habits.userId, userId), eq(habitEntries.date, today))),
+    db
+      .select({ id: tasks.id })
+      .from(tasks)
+      .where(
+        and(
+          eq(tasks.userId, userId),
+          eq(tasks.done, false),
+          lte(tasks.dueDate, today),
+        ),
+      ),
+  ]);
+
+  const values = new Map(entryRows.map((e) => [e.habitId, e.value]));
+
+  const habitsLeft = habitRows.filter((h) => {
+    if (!isHabitScheduled(h, today)) return false;
+    return !isEntryComplete(h, values.get(h.id) ?? 0);
+  }).length;
+
+  return habitsLeft + taskRows.length;
 }
 
 /** Lista mínima de metas para el selector de los formularios. */
