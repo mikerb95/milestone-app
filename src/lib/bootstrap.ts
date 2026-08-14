@@ -264,11 +264,11 @@ export async function seedSampleData(
       entries.push({ habitId: row.id, date: addDays(monday, d), value });
     }
 
-    /* Turso limita el tamaño de cada lote, así que insertamos por trozos. */
-    for (let c = 0; c < entries.length; c += 200) {
+    /* Turso corta las sentencias muy grandes, así que insertamos por trozos. */
+    for (let c = 0; c < entries.length; c += CHUNK_SIZE) {
       await db
         .insert(habitEntries)
-        .values(entries.slice(c, c + 200))
+        .values(entries.slice(c, c + CHUNK_SIZE))
         .onConflictDoNothing();
     }
   }
