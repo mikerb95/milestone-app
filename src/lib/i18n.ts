@@ -232,6 +232,7 @@ export const dict = {
     addTask: "Add task",
     addSubtask: "Add subtask",
     deleteTask: "Delete task",
+    editTask: "Edit task",
 
     newGoal: "New goal",
     newHabit: "New habit",
