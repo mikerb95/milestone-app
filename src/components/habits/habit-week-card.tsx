@@ -71,7 +71,7 @@ export function HabitWeekCard({ habit }: { habit: WeekHabit }) {
   };
 
   return (
-    <div className="card card-hover flex flex-col gap-3 p-4">
+    <div className="card card-hover group flex flex-col gap-3 p-4">
       <div className="flex items-center gap-2.5">
         <span
           className="grid h-[38px] w-[38px] flex-none place-items-center rounded-xl text-lg"
