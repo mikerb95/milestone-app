@@ -90,6 +90,7 @@ export function LogSheet({
               : `/ ${formatNumber(target.targetValue, locale)}${target.unit ? " " + target.unit : ""}`}
           </div>
         </div>
+        <FieldHelp>{h.logValue}</FieldHelp>
 
         <div className="flex gap-2">
           {STEPS.map((s) => (
