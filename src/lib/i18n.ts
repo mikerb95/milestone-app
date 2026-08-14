@@ -81,6 +81,7 @@ export const dict = {
     addTask: "Añadir tarea",
     addSubtask: "Añadir subtarea",
     deleteTask: "Eliminar tarea",
+    editTask: "Editar tarea",
 
     /* Formularios */
     newGoal: "Nueva meta",
