@@ -107,6 +107,7 @@ export function TaskSheet({
         />
         <FieldHelp>{h.taskTitle}</FieldHelp>
 
+        <Eyebrow>{t.priority}</Eyebrow>
         <FieldHelp>{h.taskPriority}</FieldHelp>
         <div className="flex flex-wrap gap-2">
           {PRIORITIES.map((k) => (
