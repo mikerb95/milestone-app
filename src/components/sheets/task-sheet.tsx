@@ -90,7 +90,7 @@ export function TaskSheet({
   };
 
   return (
-    <Sheet open={open} onClose={onClose} title={taskId ? t.newTask : t.newTask}>
+    <Sheet open={open} onClose={onClose} title={taskId ? t.editTask : t.newTask}>
       <div className="flex flex-col gap-3.5">
         <input
           value={v.title}
