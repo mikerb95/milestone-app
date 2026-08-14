@@ -88,7 +88,7 @@ export function Sheet({
         aria-modal="true"
         aria-label={title}
         className={[
-          "fixed z-60 overflow-y-auto",
+          "ms-sheet fixed z-60 overflow-y-auto",
           "bottom-0 left-0 right-0 max-h-[88vh] rounded-t-[28px] px-4 pt-3 pb-[calc(28px+env(safe-area-inset-bottom))]",
           "md:bottom-auto md:left-1/2 md:right-auto md:top-1/2 md:w-[min(520px,92vw)] md:max-h-[86vh] md:rounded-3xl md:px-5 md:pt-4 md:pb-6",
         ].join(" ")}
@@ -143,14 +143,6 @@ export function Sheet({
         </SheetHelpContext.Provider>
         {footer}
       </div>
-      <style>{`
-        [data-open="false"][role="dialog"] { transform: translateY(101%); }
-        [data-open="true"][role="dialog"] { transform: none; }
-        @media (min-width: 768px) {
-          [data-open="false"][role="dialog"] { transform: translate(-50%,-46%) scale(.96); }
-          [data-open="true"][role="dialog"] { transform: translate(-50%,-50%) scale(1); }
-        }
-      `}</style>
     </>
   );
 }
