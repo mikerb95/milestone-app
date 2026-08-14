@@ -46,6 +46,8 @@ export function GoalDetail({ goal }: { goal: GoalDetailData }) {
   const [msState, setMsState] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(goal.milestones.map((m) => [m.id, m.done])),
   );
+  const [adding, setAdding] = useState(false);
+  const [draft, setDraft] = useState("");
 
   const color = goal.category?.color ?? "#6C8CF5";
   const lightAccent = LIGHT_ACCENTS.includes(color);
