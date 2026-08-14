@@ -561,6 +561,17 @@ input[type="number"] {
   }
 }
 
+/* Una columna en móvil, autollenado a partir de tablet. */
+@utility ms-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+}
+
 @utility truncate-1 {
   overflow: hidden;
   text-overflow: ellipsis;
