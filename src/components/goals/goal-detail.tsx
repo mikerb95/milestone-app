@@ -7,6 +7,8 @@ import { useSheets } from "@/components/sheets/sheet-provider";
 import { useToast } from "@/components/ui/toast";
 import { PencilIcon } from "@/components/shell/nav-icons";
 import {
+  addMilestoneAction,
+  deleteMilestoneAction,
   setGoalStatusAction,
   toggleMilestoneAction,
 } from "@/actions/goals";
