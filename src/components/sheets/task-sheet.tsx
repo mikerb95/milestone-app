@@ -9,13 +9,16 @@ import { createTaskAction, updateTaskAction } from "@/actions/tasks";
 import { PRIORITY_COLORS, help, priorityLabels, recurrenceLabels, tr } from "@/lib/i18n";
 import type { GoalOption } from "./sheet-provider";
 
+/** Las que ya existen llegan con id y con su estado de marcado. */
+export type SubtaskDraft = { id?: string; title: string; done?: boolean };
+
 export type TaskSheetValues = {
   title: string;
   priority: "high" | "med" | "low";
   dueDate: string;
   goalId: string;
   recurrence: "" | "daily" | "weekly" | "monthly";
-  subtasks: string[];
+  subtasks: SubtaskDraft[];
 };
 
 const PRIORITIES = ["high", "med", "low"] as const;
