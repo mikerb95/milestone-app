@@ -19,7 +19,20 @@ const taskInput = z.object({
     .nullish(),
   goalId: z.string().nullish(),
   recurrence: z.enum(["daily", "weekly", "monthly"]).nullish(),
-  subtasks: z.array(z.string().trim().min(1).max(200)).max(30).default([]),
+  /**
+   * Las subtareas viajan con su id cuando ya existen. Así al editar podemos
+   * distinguir las que se renombran de las que se añaden o se quitan, sin
+   * perder por el camino cuáles estaban marcadas.
+   */
+  subtasks: z
+    .array(
+      z.object({
+        id: z.string().min(1).optional(),
+        title: z.string().trim().min(1).max(200),
+      }),
+    )
+    .max(30)
+    .default([]),
 });
 
 export type TaskInput = z.input<typeof taskInput>;
