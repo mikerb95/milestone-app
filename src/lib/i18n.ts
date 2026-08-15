@@ -54,7 +54,8 @@ export const dict = {
     milestonePh: "¿Cuál es el siguiente paso?",
     deleteGoal: "Eliminar meta",
     deleteGoalConfirm:
-      "Se borra la meta con sus hitos y su historial de avances. No hay vuelta atrás. ¿La eliminamos?",
+      "Se borra la meta con sus hitos y su historial de avances. No hay vuelta atrás.",
+    confirmDelete: "Sí, eliminar",
     editGoal: "Editar meta",
 
     /* Hábitos */
