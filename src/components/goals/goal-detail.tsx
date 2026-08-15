@@ -149,7 +149,6 @@ export function GoalDetail({ goal }: { goal: GoalDetailData }) {
   };
 
   const remove = () => {
-    if (!window.confirm(t.deleteGoalConfirm)) return;
     /* Volvemos a la lista antes de borrar: si no, el panel se queda pintando
        una meta que ya no existe mientras llega la revalidación. */
     router.push("/goals");
