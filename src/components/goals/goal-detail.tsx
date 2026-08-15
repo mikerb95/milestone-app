@@ -523,18 +523,47 @@ export function GoalDetail({ goal }: { goal: GoalDetailData }) {
             </button>
           </div>
 
-          <button
-            type="button"
-            onClick={remove}
-            className="flex h-[50px] items-center justify-center gap-2 rounded-2xl text-[15px] font-semibold transition-colors active:scale-[0.97]"
-            style={{
-              background: "rgba(255,69,58,.12)",
-              border: "1px solid rgba(255,69,58,.3)",
-              color: "#FF453A",
-            }}
-          >
-            🗑 {t.deleteGoal}
-          </button>
+          {confirmingDelete ? (
+            <div className="flex flex-col gap-2.5">
+              <p
+                role="alert"
+                className="text-pretty text-[13px] leading-snug text-[var(--t2)]"
+              >
+                {t.deleteGoalConfirm}
+              </p>
+              <div className="flex gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setConfirmingDelete(false)}
+                  className="h-[50px] flex-1 rounded-2xl text-[15px] font-semibold transition-colors active:scale-[0.97]"
+                  style={{ background: "var(--g2)", border: "1px solid var(--gbd)" }}
+                >
+                  {t.cancel}
+                </button>
+                <button
+                  type="button"
+                  onClick={remove}
+                  className="h-[50px] flex-1 rounded-2xl text-[15px] font-bold transition-colors active:scale-[0.97]"
+                  style={{ background: "#FF453A", color: "#fff" }}
+                >
+                  {t.confirmDelete}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setConfirmingDelete(true)}
+              className="flex h-[50px] items-center justify-center gap-2 rounded-2xl text-[15px] font-semibold transition-colors active:scale-[0.97]"
+              style={{
+                background: "rgba(255,69,58,.12)",
+                border: "1px solid rgba(255,69,58,.3)",
+                color: "#FF453A",
+              }}
+            >
+              🗑 {t.deleteGoal}
+            </button>
+          )}
         </div>
       </aside>
     </>
