@@ -521,6 +521,19 @@ export function GoalDetail({ goal }: { goal: GoalDetailData }) {
               ⏸ {goal.status === "paused" ? t.resume : t.pause}
             </button>
           </div>
+
+          <button
+            type="button"
+            onClick={remove}
+            className="flex h-[50px] items-center justify-center gap-2 rounded-2xl text-[15px] font-semibold transition-colors active:scale-[0.97]"
+            style={{
+              background: "rgba(255,69,58,.12)",
+              border: "1px solid rgba(255,69,58,.3)",
+              color: "#FF453A",
+            }}
+          >
+            🗑 {t.deleteGoal}
+          </button>
         </div>
       </aside>
     </>
