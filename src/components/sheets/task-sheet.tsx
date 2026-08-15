@@ -78,7 +78,7 @@ export function TaskSheet({
         dueDate: v.dueDate || null,
         goalId: v.goalId || null,
         recurrence: v.recurrence || null,
-        subtasks: v.subtasks,
+        subtasks: v.subtasks.map((s) => ({ id: s.id, title: s.title })),
       };
       const res = taskId
         ? await updateTaskAction(taskId, payload)
