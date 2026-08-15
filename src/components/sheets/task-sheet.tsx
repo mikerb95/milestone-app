@@ -61,7 +61,7 @@ export function TaskSheet({
   const addSub = () => {
     const title = subDraft.trim();
     if (!title) return;
-    set("subtasks", [...v.subtasks, title]);
+    set("subtasks", [...v.subtasks, { title }]);
     setSubDraft("");
   };
 
