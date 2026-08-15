@@ -182,12 +182,31 @@ export function TaskSheet({
         <div className="flex flex-col gap-2">
           {v.subtasks.map((s, i) => (
             <div
-              key={`${s}-${i}`}
+              key={s.id ?? `nueva-${i}`}
               className="flex items-center gap-2.5 rounded-2xl px-3.5 py-2.5"
               style={{ background: "var(--g2)", border: "1px solid var(--gbd)" }}
             >
-              <span className="h-4 w-4 flex-none rounded-full border-[1.4px] border-white/28" />
-              <span className="min-w-0 flex-1 text-sm">{s}</span>
+              <span
+                className="h-4 w-4 flex-none rounded-full"
+                style={{
+                  background: s.done ? "#34D399" : "transparent",
+                  border: s.done ? "none" : "1.4px solid rgba(255,255,255,.28)",
+                }}
+              />
+              <input
+                value={s.title}
+                onChange={(e) =>
+                  set(
+                    "subtasks",
+                    v.subtasks.map((x, j) =>
+                      j === i ? { ...x, title: e.target.value } : x,
+                    ),
+                  )
+                }
+                className="min-w-0 flex-1 bg-transparent text-sm outline-none"
+                style={{ color: s.done ? "var(--t3)" : "var(--t1)" }}
+                maxLength={200}
+              />
               <button
                 type="button"
                 aria-label={t.delete}
