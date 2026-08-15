@@ -111,6 +111,13 @@ export function TaskRow({
                   dueDate: task.dueDate ?? "",
                   goalId: task.goal?.id ?? "",
                   recurrence: (task.recurrence ?? "") as "" | "daily" | "weekly" | "monthly",
+                  subtasks: task.subtasks.map((s) => ({
+                    id: s.id,
+                    title: s.title,
+                    /* El marcado se ve pero no se cambia aquí: para eso está
+                       el desplegable de la propia tarjeta. */
+                    done: subDone[s.id] ?? s.done,
+                  })),
                 },
               })
             }
