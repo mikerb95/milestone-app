@@ -53,6 +53,8 @@ export const dict = {
     addMilestone: "Añadir hito",
     milestonePh: "¿Cuál es el siguiente paso?",
     deleteGoal: "Eliminar meta",
+    deleteGoalConfirm:
+      "Se borra la meta con sus hitos y su historial de avances. No hay vuelta atrás. ¿La eliminamos?",
     editGoal: "Editar meta",
 
     /* Hábitos */
