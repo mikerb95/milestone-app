@@ -208,6 +208,8 @@ export const dict = {
     addMilestone: "Add milestone",
     milestonePh: "What's the next step?",
     deleteGoal: "Delete goal",
+    deleteGoalConfirm:
+      "This deletes the goal with its milestones and progress history. There is no way back. Delete it?",
     editGoal: "Edit goal",
 
     todayPill: "Today",
