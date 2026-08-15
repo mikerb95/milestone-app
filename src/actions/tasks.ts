@@ -91,9 +91,9 @@ export async function createTaskAction(input: TaskInput) {
 
   if (data.subtasks.length) {
     await db.insert(subtasks).values(
-      data.subtasks.map((title, i) => ({
+      data.subtasks.map((s, i) => ({
         taskId: row.id,
-        title,
+        title: s.title,
         sortOrder: i,
       })),
     );
