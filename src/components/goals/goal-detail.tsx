@@ -8,6 +8,7 @@ import { useToast } from "@/components/ui/toast";
 import { PencilIcon } from "@/components/shell/nav-icons";
 import {
   addMilestoneAction,
+  deleteGoalAction,
   deleteMilestoneAction,
   setGoalStatusAction,
   toggleMilestoneAction,
