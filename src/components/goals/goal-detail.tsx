@@ -55,6 +55,8 @@ export function GoalDetail({ goal }: { goal: GoalDetailData }) {
   );
   const [adding, setAdding] = useState(false);
   const [draft, setDraft] = useState("");
+  /* Borrar pide un segundo toque en la propia tarjeta, sin diálogo del sistema. */
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   const color = goal.category?.color ?? "#6C8CF5";
   const lightAccent = LIGHT_ACCENTS.includes(color);
