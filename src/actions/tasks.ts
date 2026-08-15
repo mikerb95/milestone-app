@@ -123,8 +123,54 @@ export async function updateTaskAction(taskId: string, input: TaskInput) {
     })
     .where(eq(tasks.id, taskId));
 
+  await syncSubtasks(taskId, data.subtasks);
+
   revalidateAll();
   return { ok: true as const };
+}
+
+/**
+ * Deja las subtareas exactamente como llegan del formulario: borra las que el
+ * usuario quitó, renombra las que siguen (conservando si estaban marcadas) y
+ * añade las nuevas.
+ */
+async function syncSubtasks(
+  taskId: string,
+  incoming: { id?: string; title: string }[],
+) {
+  const existing = await db
+    .select({ id: subtasks.id })
+    .from(subtasks)
+    .where(eq(subtasks.taskId, taskId))
+    .orderBy(asc(subtasks.sortOrder));
+
+  const existingIds = new Set(existing.map((s) => s.id));
+  /* Un id que no sea de esta tarea se trata como fila nueva, nunca se toca. */
+  const kept = new Set(
+    incoming.map((s) => s.id).filter((id): id is string => !!id && existingIds.has(id)),
+  );
+
+  const removed = existing.filter((s) => !kept.has(s.id)).map((s) => s.id);
+  if (removed.length) {
+    await db
+      .delete(subtasks)
+      .where(and(eq(subtasks.taskId, taskId), inArray(subtasks.id, removed)));
+  }
+
+  const added: { taskId: string; title: string; sortOrder: number }[] = [];
+
+  for (const [i, s] of incoming.entries()) {
+    if (s.id && kept.has(s.id)) {
+      await db
+        .update(subtasks)
+        .set({ title: s.title, sortOrder: i })
+        .where(and(eq(subtasks.id, s.id), eq(subtasks.taskId, taskId)));
+    } else {
+      added.push({ taskId, title: s.title, sortOrder: i });
+    }
+  }
+
+  if (added.length) await db.insert(subtasks).values(added);
 }
 
 /**
