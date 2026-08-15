@@ -40,6 +40,8 @@ export default async function GoalDetailPage({
         unit: goal.unit,
         targetDate: goal.targetDate,
         percent: goalPercent(goal, goal.milestones),
+        categoryId: goal.categoryId,
+        reminder: goal.reminder,
         category: goal.category
           ? {
               name: categoryName(goal.category, settings.locale),

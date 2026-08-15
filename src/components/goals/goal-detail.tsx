@@ -34,6 +34,10 @@ export type GoalDetailData = {
   targetDate: string | null;
   percent: number;
   category: { name: string; emoji: string; color: string } | null;
+  /* Sueltos además de `category`: el formulario de edición los necesita para
+     no reescribirlos con sus valores por defecto. */
+  categoryId: string | null;
+  reminder: boolean;
   milestones: { id: string; title: string; done: boolean }[];
   updates: { id: string; value: number; note: string | null; date: string }[];
 };
@@ -218,6 +222,8 @@ export function GoalDetail({ goal }: { goal: GoalDetailData }) {
                   targetValue: String(goal.targetValue),
                   unit: goal.unit ?? "",
                   targetDate: goal.targetDate ?? "",
+                  categoryId: goal.categoryId,
+                  reminder: goal.reminder,
                 },
               })
             }
